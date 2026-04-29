@@ -127,4 +127,65 @@ router.get('/me', async (req, res) => {
     }
 });
 
+const Order = require('../models/Order');
+const Message = require('../models/Message');
+
+// Update Current User Profile (Name)
+router.put('/profile', async (req, res) => {
+    try {
+        const { id, fullname } = req.body;
+        if (!id) return res.status(400).json({ message: 'User ID is required' });
+
+        const user = await User.findByIdAndUpdate(id, { fullname }, { new: true }).select('-password');
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Delete Current User Account
+router.delete('/profile', async (req, res) => {
+    try {
+        const { id } = req.body;
+        if (!id) return res.status(400).json({ message: 'User ID is required' });
+
+        await User.findByIdAndDelete(id);
+        res.json({ message: 'Account deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Get User's Orders
+router.get('/my-orders', async (req, res) => {
+    try {
+        const { id } = req.query;
+        if (!id) return res.status(400).json({ message: 'User ID is required' });
+        
+        if (id === 'admin') {
+            return res.json([]);
+        }
+
+        const orders = await Order.find({ farmer: id }).sort({ createdAt: -1 });
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Get User's Messages (by phone)
+router.get('/my-messages', async (req, res) => {
+    try {
+        const { phone } = req.query;
+        if (!phone) return res.status(400).json({ message: 'Phone is required' });
+
+        const messages = await Message.find({ phone }).sort({ createdAt: -1 });
+        res.json(messages);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 module.exports = router;

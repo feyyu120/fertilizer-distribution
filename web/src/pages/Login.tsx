@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Leaf, Mail, Phone, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
     const [identifier, setIdentifier] = useState('');
@@ -9,6 +10,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -22,8 +24,7 @@ const Login = () => {
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Login failed');
 
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
+            login(data.user, data.token);
             toast.success(`Welcome back, ${data.user.fullname || 'Admin'}!`);
 
             setTimeout(() => {

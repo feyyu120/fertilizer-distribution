@@ -59,7 +59,7 @@ const Home = () => {
                         transition={{ duration: 1.2 }}
                         className="absolute inset-0 bg-cover bg-center"
                         style={{
-                            backgroundImage: `linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)), url(${heroImages[currentImage]})`,
+                            backgroundImage: ` url(${heroImages[currentImage]})`,
                         }}
                     />
                 </AnimatePresence>
@@ -71,13 +71,13 @@ const Home = () => {
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <p className="uppercase tracking-[4px] text-white-400 text-sm  mb-4">
+                        <p className="uppercase tracking-[4px] text-green-400 text-sm font-semibold mb-4 drop-shadow-md">
                             EMPOWERING ETHIOPIAN FARMERS
                         </p>
 
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-16">
+                        <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold leading-tight mb-8 text-white drop-shadow-lg">
                             FairPrice   <br />
-                            <span className="text-white-500">Fertilizer Distribution</span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">Fertilizer Distribution</span>
                         </h1>
 
                         <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10">
@@ -130,8 +130,8 @@ const Home = () => {
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-8">
-                        <div className="bg-gradient-to-br from-green-900/30 to-black border border-green-800 rounded-3xl p-10 group hover:border-green-500 transition-all">
-                            <div className="uppercase text-green-400 text-sm tracking-widest mb-4">URGENT</div>
+                        <div className="bg-gradient-to-br from-green-900/40 to-gray-900 border border-green-700/50 rounded-3xl p-10 group hover:border-green-500 hover:shadow-2xl hover:shadow-green-900/20 transition-all duration-300">
+                            <div className="inline-block px-3 py-1 bg-green-500/20 text-green-400 text-xs font-bold tracking-widest rounded-full mb-5">URGENT</div>
                             <h3 className="text-3xl font-bold leading-tight mb-6">
                                 New DAP Fertilizer Stock Just Arrived in Adama
                             </h3>

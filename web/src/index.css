@@ -22,8 +22,14 @@ html.light-mode .text-gray-400 { color: #6b7280 !important; }
 html.light-mode .text-gray-500 { color: #9ca3af !important; }
 html.light-mode .text-gray-600 { color: #4b5563 !important; }
 
-html.light-mode .hover\:bg-gray-900:hover { background-color: #f3f4f6 !important; }
 html.light-mode .hover\:bg-gray-800:hover { background-color: #e5e7eb !important; }
 html.light-mode .hover\:bg-gray-700:hover { background-color: #d1d5db !important; }
 
 html.light-mode .hover\:text-white:hover { color: #000000 !important; }
+
+.nav-bg {
+  background-color: rgba(3, 7, 18, 0.95);
+}
+html.light-mode .nav-bg {
+  background-color: rgba(243, 244, 246, 0.95) !important;
+}

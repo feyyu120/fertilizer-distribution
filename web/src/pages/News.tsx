@@ -1,11 +1,15 @@
 import { Heart, MessageCircle, Share2, User } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 import { api } from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 
 const News = () => {
     const [posts, setPosts] = useState<any[]>([]);
-    const [likedPosts, setLikedPosts] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
+    const { user: currentUser } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchNews = async () => {
@@ -21,11 +25,32 @@ const News = () => {
         fetchNews();
     }, []);
 
-    const toggleLike = (id: string) => {
-        if (likedPosts.includes(id)) {
-            setLikedPosts(likedPosts.filter(postId => postId !== id));
-        } else {
-            setLikedPosts([...likedPosts, id]);
+    const toggleLike = async (postId: string) => {
+        if (!currentUser) {
+            toast.error("Please login to like posts");
+            setTimeout(() => navigate('/login'), 1500);
+            return;
+        }
+
+        // Optimistic UI update
+        setPosts(prevPosts => prevPosts.map(post => {
+            if (post._id === postId) {
+                const isLiked = post.likedBy?.includes(currentUser._id);
+                const updatedLikedBy = isLiked
+                    ? post.likedBy.filter((id: string) => id !== currentUser._id)
+                    : [...(post.likedBy || []), currentUser._id];
+                return { ...post, likedBy: updatedLikedBy };
+            }
+            return post;
+        }));
+
+        try {
+            await api.toggleNewsLike(postId, currentUser._id);
+        } catch (error) {
+            toast.error("Failed to update like");
+            // Revert on failure
+            const data = await api.getNews();
+            setPosts(data);
         }
     };
 
@@ -38,13 +63,9 @@ const News = () => {
     }
 
     return (
-        <div style={{ maxWidth: '100%', margin: '0 auto', padding: '3rem 1.5rem' }}>
-            <h1 style={{
-                fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-                fontWeight: 'bold',
-                marginBottom: '2.5rem',
-                textAlign: 'center'
-            }}>
+        <div className="w-full max-w-6xl mx-auto px-4 py-12">
+            <Toaster position="top-right" />
+            <h1 className="text-3xl md:text-5xl font-bold mb-10 text-center">
                 Agricultural News & Updates
             </h1>
 
@@ -53,130 +74,80 @@ const News = () => {
                     <p>No news available at the moment.</p>
                 </div>
             ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', maxWidth: '800px', margin: '0 auto' }}>
-                    {posts.map((post) => (
-                        <div
-                            key={post._id}
-                            style={{
-                                background: 'var(--bg-secondary, #111827)',
-                                borderRadius: '1.5rem',
-                                overflow: 'hidden',
-                                border: '1px solid var(--border-color, #1f2937)',
-                                width: '100%',
-                            }}
-                            className="bg-gray-900 border-gray-800"
-                        >
-                            {/* Post Header */}
-                            <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                padding: '1.25rem',
-                                borderBottom: '1px solid var(--border-color, #1f2937)'
-                            }} className="border-gray-800">
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                    <div style={{
-                                        width: '3rem',
-                                        height: '3rem',
-                                        background: '#374151',
-                                        borderRadius: '50%',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        fontSize: '1.75rem'
-                                    }}>
-                                        {post.user === 'Admin' ? '👨‍💼' : '🌾'}
+                <div className="flex flex-col gap-8 w-full">
+                    {posts.map((post) => {
+                        const isLiked = currentUser ? post.likedBy?.includes(currentUser._id) : false;
+                        const likeCount = post.likedBy?.length || 0;
+
+                        return (
+                            <div
+                                key={post._id}
+                                className="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden w-full transition-all hover:border-gray-700"
+                            >
+                                {/* Post Header */}
+                                <div className="flex items-center justify-between p-5 border-b border-gray-800">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center text-2xl">
+                                            {post.user === 'Admin' ? '👨‍💼' : '🌾'}
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold text-gray-100 text-lg">{post.user}</h3>
+                                            <p className="text-sm text-gray-500">
+                                                {new Date(post.createdAt).toLocaleDateString(undefined, {
+                                                    year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                                                })}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h3 style={{ fontWeight: 600 }} className="text-gray-100">{post.user}</h3>
-                                        <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>
-                                            {new Date(post.createdAt).toLocaleDateString()}
-                                        </p>
-                                    </div>
-                                </div>
-                                <button style={{ color: '#9ca3af', background: 'none', border: 'none', cursor: 'pointer' }}>
-                                    <User size={20} />
-                                </button>
-                            </div>
-
-                            {/* Post Image */}
-                            {post.image && (
-                                <img
-                                    src={post.image}
-                                    alt="Post"
-                                    style={{
-                                        width: '100%',
-                                        height: 'auto',
-                                        objectFit: 'cover',
-                                        maxHeight: '600px',
-                                        display: 'block'
-                                    }}
-                                />
-                            )}
-
-                            {/* Caption */}
-                            <div style={{ padding: '1.5rem' }}>
-                                <h4 className="text-xl font-bold mb-2 text-white">{post.title}</h4>
-                                <p style={{ color: '#d1d5db', lineHeight: 1.7, fontSize: '1.05rem' }}>{post.caption}</p>
-                            </div>
-
-                            {/* Actions */}
-                            <div style={{
-                                padding: '0 1.5rem 1.5rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                borderTop: '1px solid var(--border-color, #1f2937)',
-                                paddingTop: '1rem'
-                            }} className="border-gray-800">
-                                <div style={{ display: 'flex', gap: '2rem' }}>
-                                    <button
-                                        onClick={() => toggleLike(post._id)}
-                                        style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '0.5rem',
-                                            background: 'none',
-                                            border: 'none',
-                                            cursor: 'pointer',
-                                            color: likedPosts.includes(post._id) ? '#ef4444' : '#d1d5db',
-                                            transition: 'color 0.2s'
-                                        }}
-                                    >
-                                        <Heart size={24} fill={likedPosts.includes(post._id) ? "currentColor" : "none"} />
-                                        <span>{likedPosts.includes(post._id) ? 1 : 0}</span>
-                                    </button>
-
-                                    <button style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem',
-                                        background: 'none',
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        color: '#d1d5db',
-                                        transition: 'color 0.2s'
-                                    }}>
-                                        <MessageCircle size={24} />
-                                        <span>0</span>
-                                    </button>
-
-                                    <button style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem',
-                                        background: 'none',
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        color: '#d1d5db',
-                                        transition: 'color 0.2s'
-                                    }}>
-                                        <Share2 size={24} />
+                                    <button className="text-gray-500 hover:text-gray-300 transition">
+                                        <User size={24} />
                                     </button>
                                 </div>
+
+                                {/* Post Content Layout */}
+                                <div className="flex flex-col lg:flex-row">
+                                    {/* Post Image */}
+                                    {post.image && (
+                                        <div className="lg:w-1/2 relative">
+                                            <img
+                                                src={post.image}
+                                                alt="Post"
+                                                className="w-full h-full object-cover max-h-[500px] lg:max-h-[600px] block"
+                                            />
+                                        </div>
+                                    )}
+
+                                    {/* Caption & Actions */}
+                                    <div className={`flex flex-col justify-between p-6 md:p-8 ${post.image ? 'lg:w-1/2' : 'w-full'}`}>
+                                        <div>
+                                            <h4 className="text-2xl font-bold mb-4 text-white">{post.title}</h4>
+                                            <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap">{post.caption}</p>
+                                        </div>
+
+                                        {/* Actions */}
+                                        <div className="flex items-center gap-8 mt-8 pt-6 border-t border-gray-800">
+                                            <button
+                                                onClick={() => toggleLike(post._id)}
+                                                className={`flex items-center gap-2 transition-colors ${isLiked ? 'text-red-500' : 'text-gray-400 hover:text-red-400'}`}
+                                            >
+                                                <Heart size={28} fill={isLiked ? "currentColor" : "none"} />
+                                                <span className="text-lg font-medium">{likeCount}</span>
+                                            </button>
+
+                                            <button className="flex items-center gap-2 text-gray-400 hover:text-blue-400 transition-colors">
+                                                <MessageCircle size={28} />
+                                                <span className="text-lg font-medium">0</span>
+                                            </button>
+
+                                            <button className="flex items-center gap-2 text-gray-400 hover:text-green-400 transition-colors ml-auto">
+                                                <Share2 size={28} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             )}
         </div>

@@ -1,4 +1,6 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -8,13 +10,24 @@ import FAQ from './pages/FAQ';
 import Support from './pages/Support';
 import AdminDashboard from './pages/AdminDashboard';
 
+// Custom route to redirect logged-in users away from auth pages
+const GuestRoute = ({ children }: { children: JSX.Element }) => {
+  const { user } = useAuth();
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+};
+
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/*" element={<UserLayout />} />
-        <Route path="/admin/*" element={<AdminDashboard />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/*" element={<UserLayout />} />
+          <Route path="/admin/*" element={<AdminDashboard />} />
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }
@@ -25,8 +38,8 @@ const UserLayout = () => (
     <Navbar />
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
+      <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />
       <Route path="/news" element={<News />} />
       <Route path="/faq" element={<FAQ />} />
       <Route path="/support" element={<Support />} />

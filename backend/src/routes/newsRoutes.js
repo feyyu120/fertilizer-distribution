@@ -50,4 +50,27 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+// Toggle like
+router.put('/:id/like', async (req, res) => {
+    try {
+        const { userId } = req.body;
+        if (!userId) return res.status(400).json({ message: 'User ID is required' });
+
+        const post = await News.findById(req.params.id);
+        if (!post) return res.status(404).json({ message: 'Post not found' });
+
+        const index = post.likedBy.indexOf(userId);
+        if (index === -1) {
+            post.likedBy.push(userId); // Like
+        } else {
+            post.likedBy.splice(index, 1); // Unlike
+        }
+
+        await post.save();
+        res.json(post);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 module.exports = router;

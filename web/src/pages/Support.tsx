@@ -1,9 +1,14 @@
 import { MessageCircle, Send, Phone } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { api } from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 
 const Support = () => {
+    const { user } = useAuth();
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
@@ -11,13 +16,30 @@ const Support = () => {
     });
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        if (user) {
+            setFormData(prev => ({
+                ...prev,
+                name: user.fullname || '',
+                phone: user.phone || ''
+            }));
+        }
+    }, [user]);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        if (!user) {
+            toast.error("You must be logged in to send a message.");
+            setTimeout(() => navigate('/login'), 1500);
+            return;
+        }
+
         setLoading(true);
         try {
             await api.sendMessage(formData);
             toast.success("Thank you! Your message has been sent. We will reply soon.");
-            setFormData({ name: '', phone: '', message: '' });
+            setFormData(prev => ({ ...prev, message: '' })); // Only clear message
         } catch (error) {
             toast.error("Failed to send message. Please try again.");
             console.error("Support message error:", error);
@@ -86,8 +108,9 @@ const Support = () => {
                             placeholder="Your Full Name"
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full px-5 py-4 bg-gray-800 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-600 transition"
+                            className="w-full px-5 py-4 bg-gray-800 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-600 transition disabled:opacity-50"
                             required
+                            disabled={!!user} // disabled if auto-filled
                         />
 
                         <input
@@ -95,8 +118,9 @@ const Support = () => {
                             placeholder="Phone Number"
                             value={formData.phone}
                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                            className="w-full px-5 py-4 bg-gray-800 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-600 transition"
+                            className="w-full px-5 py-4 bg-gray-800 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-600 transition disabled:opacity-50"
                             required
+                            disabled={!!user} // disabled if auto-filled
                         />
 
                         <textarea
