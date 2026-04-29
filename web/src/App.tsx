@@ -6,24 +6,20 @@ import Register from './pages/Register';
 import News from './pages/News';
 import FAQ from './pages/FAQ';
 import Support from './pages/Support';
-import AdminDashboard from './pages/AdminDashboard';   // New
-import { Toaster } from 'react-hot-toast';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
     <Router>
-      <Toaster position="top-right" />
       <Routes>
         <Route path="/*" element={<UserLayout />} />
         <Route path="/admin/*" element={<AdminDashboard />} />
-
-
       </Routes>
     </Router>
   );
 }
 
-// Separate layout for normal users
+// Layout for normal users (with Navbar)
 const UserLayout = () => (
   <div className="min-h-screen bg-gray-950 text-white">
     <Navbar />

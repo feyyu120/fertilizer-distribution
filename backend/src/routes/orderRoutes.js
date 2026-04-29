@@ -6,7 +6,7 @@ const Order = require('../models/Order');
 // Get all orders (Admin)
 router.get('/', async (req, res) => {
     try {
-        const orders = await Order.find().populate('farmer', 'fullname phone');
+        const orders = await Order.find().sort({ createdAt: -1 });
         res.json(orders);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
@@ -19,6 +19,22 @@ router.post('/', async (req, res) => {
         const order = new Order(req.body);
         await order.save();
         res.status(201).json(order);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Update order status (approve/reject/cancel)
+router.put('/:id/status', async (req, res) => {
+    try {
+        const { status } = req.body;
+        const order = await Order.findByIdAndUpdate(
+            req.params.id,
+            { status },
+            { new: true }
+        );
+        if (!order) return res.status(404).json({ message: 'Order not found' });
+        res.json(order);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }

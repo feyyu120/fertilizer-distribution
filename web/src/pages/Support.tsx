@@ -1,5 +1,7 @@
-import { MessageCircle, Mail, Send, Phone } from 'lucide-react';
+import { MessageCircle, Send, Phone } from 'lucide-react';
 import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+import { api } from '../utils/api';
 
 const Support = () => {
     const [formData, setFormData] = useState({
@@ -7,14 +9,26 @@ const Support = () => {
         phone: '',
         message: ''
     });
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        alert("Thank you! Your message has been sent. We will reply via Telegram or phone.");
+        setLoading(true);
+        try {
+            await api.sendMessage(formData);
+            toast.success("Thank you! Your message has been sent. We will reply soon.");
+            setFormData({ name: '', phone: '', message: '' });
+        } catch (error) {
+            toast.error("Failed to send message. Please try again.");
+            console.error("Support message error:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <div className="max-w-4xl mx-auto py-16 px-6">
+            <Toaster position="top-right" />
             <div className="text-center mb-12">
                 <h1 className="text-5xl font-bold mb-4">Get In Touch</h1>
                 <p className="text-gray-400 text-lg">We're here to help you with any questions</p>
@@ -40,8 +54,8 @@ const Support = () => {
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-blue-900/50 rounded-2xl flex items-center justify-center">
-                                    📬
+                                <div className="w-12 h-12 bg-blue-900/50 rounded-2xl flex items-center justify-center text-blue-400 text-2xl">
+                                    📧
                                 </div>
                                 <div>
                                     <p className="font-medium">Email</p>
@@ -50,8 +64,8 @@ const Support = () => {
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-blue-600/30 rounded-2xl flex items-center justify-center text-2xl">
-                                    𝕏
+                                <div className="w-12 h-12 bg-blue-600/30 rounded-2xl flex items-center justify-center text-blue-400 text-2xl">
+                                    ✈️
                                 </div>
                                 <div>
                                     <p className="font-medium">Telegram</p>
@@ -72,7 +86,7 @@ const Support = () => {
                             placeholder="Your Full Name"
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full px-5 py-4 bg-gray-800 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-600"
+                            className="w-full px-5 py-4 bg-gray-800 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-600 transition"
                             required
                         />
 
@@ -81,7 +95,7 @@ const Support = () => {
                             placeholder="Phone Number"
                             value={formData.phone}
                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                            className="w-full px-5 py-4 bg-gray-800 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-600"
+                            className="w-full px-5 py-4 bg-gray-800 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-600 transition"
                             required
                         />
 
@@ -90,16 +104,23 @@ const Support = () => {
                             placeholder="Write your message, question or feedback..."
                             value={formData.message}
                             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                            className="w-full px-5 py-4 bg-gray-800 rounded-3xl focus:outline-none focus:ring-2 focus:ring-green-600 resize-y"
+                            className="w-full px-5 py-4 bg-gray-800 rounded-3xl focus:outline-none focus:ring-2 focus:ring-green-600 resize-y transition"
                             required
                         />
 
                         <button
                             type="submit"
-                            className="w-full py-4 bg-green-600 hover:bg-green-700 rounded-2xl font-semibold flex items-center justify-center gap-3"
+                            disabled={loading}
+                            className="w-full py-4 bg-green-600 hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed rounded-2xl font-semibold flex items-center justify-center gap-3 transition"
                         >
-                            <Send size={20} />
-                            Send Message
+                            {loading ? (
+                                <div className="w-6 h-6 border-2 border-white/40 border-t-white rounded-full animate-spin"></div>
+                            ) : (
+                                <>
+                                    <Send size={20} />
+                                    Send Message
+                                </>
+                            )}
                         </button>
                     </form>
                 </div>

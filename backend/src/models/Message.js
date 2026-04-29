@@ -19,6 +19,10 @@ const messageSchema = new mongoose.Schema({
         enum: ['unread', 'read', 'replied'],
         default: 'unread'
     },
+    reply: {
+        type: String,
+        default: null
+    },
     repliedBy: {
         type: String,
         default: null

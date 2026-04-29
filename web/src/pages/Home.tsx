@@ -15,21 +15,21 @@ const activeFarmers = [
         location: "Adama, Oromia",
         yield: "42% Increase",
         avatar: "👨‍🌾",
-        image: "https://images.unsplash.com/photo-1592982537447-6f2a6a0c7c18?q=80&w=600"
+        image: "https://images.unsplash.com/photo-1505471768190-275e2ad7b3f9?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
         name: "Abebech Dibaba",
         location: "Shashemene, Oromia",
         yield: "35% Increase",
         avatar: "👩‍🌾",
-        image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=600"
+        image: "https://images.unsplash.com/photo-1589923188900-85dae523342b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
         name: "Mohammed Hassan",
         location: "Worabe, Silti Zone",
         yield: "51% Increase",
         avatar: "👨‍🌾",
-        image: "https://images.unsplash.com/photo-1600585154340-be6161a56a9c?q=80&w=600"
+        image: "https://images.unsplash.com/photo-1709542938843-61e60390846f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     }
 ];
 
@@ -75,7 +75,7 @@ const Home = () => {
                             EMPOWERING ETHIOPIAN FARMERS
                         </p>
 
-                        <h1 className="text-6xl md:text-5xl lg:text-7xl font-bold leading-none mb-16">
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-16">
                             FairPrice   <br />
                             <span className="text-white-500">Fertilizer Distribution</span>
                         </h1>

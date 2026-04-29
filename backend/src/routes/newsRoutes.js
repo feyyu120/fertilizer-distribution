@@ -25,4 +25,29 @@ router.post('/', async (req, res) => {
     }
 });
 
+// Update news post
+router.put('/:id', async (req, res) => {
+    try {
+        const newsPost = await News.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        );
+        if (!newsPost) return res.status(404).json({ message: 'Post not found' });
+        res.json(newsPost);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Delete news post
+router.delete('/:id', async (req, res) => {
+    try {
+        await News.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Post deleted' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 module.exports = router;
