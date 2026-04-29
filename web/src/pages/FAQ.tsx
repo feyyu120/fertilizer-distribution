@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const FAQ = () => {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -32,133 +33,83 @@ const FAQ = () => {
     };
 
     return (
-        <div style={{ maxWidth: '900px', margin: '0 auto', padding: '4rem 1.5rem' }}>
+        <div className="max-w-4xl mx-auto px-6 py-16 transition-colors duration-300">
             {/* Header Section */}
-            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                <p style={{
-                    color: '#22c55e',
-                    fontWeight: 600,
-                    fontSize: '0.875rem',
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    marginBottom: '0.75rem'
-                }}>
+            <div className="text-center mb-12">
+                <p className="text-green-600 dark:text-green-500 font-semibold text-sm tracking-widest uppercase mb-3 transition-colors">
                     FAQ
                 </p>
-                <h1 style={{
-                    fontSize: 'clamp(2rem, 5vw, 3rem)',
-                    fontWeight: 'bold',
-                    marginBottom: '1rem',
-                    lineHeight: 1.2
-                }}>
+                <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white leading-tight transition-colors">
                     Frequently Asked Questions
                 </h1>
-                <p style={{ color: '#9ca3af', fontSize: '1.1rem', maxWidth: '500px', margin: '0 auto' }}>
+                <p className="text-gray-600 dark:text-gray-400 text-lg max-w-xl mx-auto transition-colors">
                     Still unsure about ordering or delivery? We've gathered common answers to help you decide.
                 </p>
             </div>
 
             {/* FAQ Cards */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="flex flex-col gap-4">
                 {faqs.map((item, index) => {
                     const isOpen = openIndex === index;
                     return (
                         <div
                             key={index}
-                            style={{
-                                background: '#111827',
-                                borderRadius: '1rem',
-                                border: `1px solid ${isOpen ? '#22c55e33' : '#1f2937'}`,
-                                overflow: 'hidden',
-                                transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
-                                boxShadow: isOpen ? '0 0 20px rgba(34, 197, 94, 0.05)' : 'none',
-                            }}
+                            className={`bg-white dark:bg-gray-900 rounded-2xl border overflow-hidden transition-all duration-300 ${
+                                isOpen 
+                                    ? 'border-green-500 shadow-lg shadow-green-500/10 dark:shadow-green-900/20' 
+                                    : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700'
+                            }`}
                         >
                             {/* Question Row */}
                             <button
                                 onClick={() => toggleFAQ(index)}
-                                style={{
-                                    width: '100%',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '1rem',
-                                    padding: '1.25rem 1.5rem',
-                                    background: 'none',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    color: 'white',
-                                    textAlign: 'left',
-                                }}
+                                className="w-full flex items-center gap-4 p-5 md:p-6 bg-transparent border-none cursor-pointer text-left focus:outline-none group"
                             >
                                 {/* Icon */}
-                                <div style={{
-                                    width: '2.5rem',
-                                    height: '2.5rem',
-                                    minWidth: '2.5rem',
-                                    borderRadius: '0.75rem',
-                                    background: isOpen ? 'rgba(34, 197, 94, 0.15)' : 'rgba(99, 102, 241, 0.15)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    transition: 'background 0.3s ease',
-                                }}>
+                                <div className={`w-10 h-10 min-w-[2.5rem] rounded-xl flex items-center justify-center transition-colors duration-300 ${
+                                    isOpen 
+                                        ? 'bg-green-100 dark:bg-green-900/30' 
+                                        : 'bg-indigo-50 dark:bg-indigo-900/20 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/40'
+                                }`}>
                                     <HelpCircle
-                                        size={18}
-                                        style={{
-                                            color: isOpen ? '#22c55e' : '#818cf8',
-                                            transition: 'color 0.3s ease'
-                                        }}
+                                        size={20}
+                                        className={`transition-colors duration-300 ${
+                                            isOpen ? 'text-green-600 dark:text-green-500' : 'text-indigo-500 dark:text-indigo-400'
+                                        }`}
                                     />
                                 </div>
 
                                 {/* Question Text */}
-                                <span style={{
-                                    flex: 1,
-                                    fontWeight: 600,
-                                    fontSize: '1.05rem',
-                                    lineHeight: 1.5,
-                                }}>
+                                <span className="flex-1 font-semibold text-lg text-gray-900 dark:text-white transition-colors duration-300">
                                     {item.q}
                                 </span>
 
                                 {/* Toggle Icon */}
-                                <div style={{
-                                    width: '2rem',
-                                    height: '2rem',
-                                    minWidth: '2rem',
-                                    borderRadius: '50%',
-                                    border: '1px solid #374151',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    transition: 'transform 0.3s ease, border-color 0.3s ease',
-                                    transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                                    borderColor: isOpen ? '#22c55e' : '#374151',
-                                }}>
+                                <div className={`w-8 h-8 min-w-[2rem] rounded-full border flex items-center justify-center transition-all duration-300 ${
+                                    isOpen 
+                                        ? 'border-green-500 rotate-180 bg-green-50 dark:bg-green-900/20' 
+                                        : 'border-gray-300 dark:border-gray-700 group-hover:border-gray-400 dark:group-hover:border-gray-600'
+                                }`}>
                                     <ChevronDown
-                                        size={16}
-                                        style={{
-                                            color: isOpen ? '#22c55e' : '#6b7280',
-                                            transition: 'color 0.3s ease'
-                                        }}
+                                        size={18}
+                                        className={`transition-colors duration-300 ${
+                                            isOpen ? 'text-green-600 dark:text-green-500' : 'text-gray-500 dark:text-gray-400'
+                                        }`}
                                     />
                                 </div>
                             </button>
 
                             {/* Answer (collapsible) */}
-                            <div style={{
-                                maxHeight: isOpen ? '300px' : '0px',
-                                overflow: 'hidden',
-                                transition: 'max-height 0.4s ease, padding 0.3s ease',
-                                padding: isOpen ? '0 1.5rem 1.5rem 5rem' : '0 1.5rem 0 5rem',
-                            }}>
-                                <p style={{
-                                    color: '#9ca3af',
-                                    lineHeight: 1.8,
-                                    fontSize: '0.975rem',
-                                }}>
-                                    {item.a}
-                                </p>
+                            <div 
+                                className={`overflow-hidden transition-all duration-400 ease-in-out ${
+                                    isOpen ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'
+                                }`}
+                            >
+                                <div className="px-6 pb-6 pt-0 ml-14">
+                                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-base transition-colors duration-300">
+                                        {item.a}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     );
@@ -166,8 +117,8 @@ const FAQ = () => {
             </div>
 
             {/* Footer */}
-            <p style={{ textAlign: 'center', color: '#6b7280', marginTop: '3rem', fontSize: '0.95rem' }}>
-                Still have questions? Visit our <span style={{ color: '#22c55e', fontWeight: 500 }}>Support</span> page.
+            <p className="text-center text-gray-500 dark:text-gray-400 mt-12 text-base transition-colors duration-300">
+                Still have questions? Visit our <Link to="/support" className="text-green-600 dark:text-green-500 font-medium hover:underline transition-colors">Support</Link> page.
             </p>
         </div>
     );

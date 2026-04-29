@@ -9,9 +9,10 @@ import News from './pages/News';
 import FAQ from './pages/FAQ';
 import Support from './pages/Support';
 import AdminDashboard from './pages/AdminDashboard';
+import React from 'react';
 
 // Custom route to redirect logged-in users away from auth pages
-const GuestRoute = ({ children }: { children: JSX.Element }) => {
+const GuestRoute = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
   if (user) {
     return <Navigate to="/" replace />;
