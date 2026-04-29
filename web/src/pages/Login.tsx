@@ -39,40 +39,40 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-950 px-4 relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4 relative overflow-hidden transition-colors duration-300">
             <Toaster position="top-right" />
 
             {/* Background blobs */}
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-900/20 rounded-full blur-3xl -z-10" />
-            <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-emerald-900/20 rounded-full blur-3xl -z-10" />
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-500/10 dark:bg-green-900/20 rounded-full blur-3xl -z-10 transition-colors" />
+            <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-emerald-500/10 dark:bg-emerald-900/20 rounded-full blur-3xl -z-10 transition-colors" />
 
             <div className="w-full max-w-md">
                 {/* Logo */}
                 <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-2xl mb-4 shadow-lg shadow-green-900/50">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-2xl mb-4 shadow-lg shadow-green-600/30 dark:shadow-green-900/50">
                         <Leaf size={32} className="text-white" />
                     </div>
-                    <h1 className="text-3xl font-bold mb-1">Welcome Back</h1>
-                    <p className="text-gray-400 text-sm">Sign in to FertilizerHub</p>
+                    <h1 className="text-3xl font-bold mb-1 text-gray-900 dark:text-white transition-colors">Welcome Back</h1>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm transition-colors">Sign in to FertilizerHub</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="bg-gray-900 border border-gray-800 rounded-3xl p-7 space-y-5 shadow-xl">
+                <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-7 space-y-5 shadow-xl transition-colors duration-300">
                     {/* Identifier */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Email or Phone</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors">Email or Phone</label>
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 {identifier.includes('@') ? (
-                                    <Mail size={17} className="text-gray-500" />
+                                    <Mail size={17} className="text-gray-400 dark:text-gray-500 transition-colors" />
                                 ) : (
-                                    <Phone size={17} className="text-gray-500" />
+                                    <Phone size={17} className="text-gray-400 dark:text-gray-500 transition-colors" />
                                 )}
                             </div>
                             <input
                                 type="text"
                                 value={identifier}
                                 onChange={e => setIdentifier(e.target.value)}
-                                className="w-full pl-11 pr-4 py-3 bg-gray-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-600 placeholder-gray-600 transition"
+                                className="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-transparent text-gray-900 dark:text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-600 placeholder-gray-500 dark:placeholder-gray-600 transition-all"
                                 placeholder="Enter email or phone number"
                                 required
                             />
@@ -81,23 +81,23 @@ const Login = () => {
 
                     {/* Password */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors">Password</label>
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <Lock size={17} className="text-gray-500" />
+                                <Lock size={17} className="text-gray-400 dark:text-gray-500 transition-colors" />
                             </div>
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
-                                className="w-full pl-11 pr-12 py-3 bg-gray-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-600 placeholder-gray-600 transition"
+                                className="w-full pl-11 pr-12 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-transparent text-gray-900 dark:text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-600 placeholder-gray-500 dark:placeholder-gray-600 transition-all"
                                 placeholder="Enter your password"
                                 required
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-gray-300 transition"
+                                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                             >
                                 {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
                             </button>
@@ -108,7 +108,7 @@ const Login = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3.5 bg-green-600 hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-green-900/30"
+                        className="w-full py-3.5 bg-green-600 hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-green-600/20 dark:shadow-green-900/30"
                     >
                         {loading ? (
                             <div className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
@@ -118,14 +118,14 @@ const Login = () => {
                     </button>
 
                     {/* Admin hint */}
-                    <div className="bg-gray-800/60 rounded-xl p-3 text-xs text-gray-500 text-center">
-                        Admin: <span className="text-gray-300">admin@fertilizerhub.et</span> / <span className="text-gray-300">admin123</span>
+                    <div className="bg-gray-100 dark:bg-gray-800/60 rounded-xl p-3 text-xs text-gray-500 dark:text-gray-400 text-center transition-colors">
+                        Admin: <span className="text-gray-700 dark:text-gray-300 font-medium">admin@fertilizerhub.et</span> / <span className="text-gray-700 dark:text-gray-300 font-medium">admin123</span>
                     </div>
                 </form>
 
-                <p className="text-center mt-5 text-gray-400 text-sm">
+                <p className="text-center mt-5 text-gray-600 dark:text-gray-400 text-sm transition-colors">
                     Don't have an account?{' '}
-                    <Link to="/register" className="text-green-400 hover:text-green-300 font-medium transition">
+                    <Link to="/register" className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium transition-colors">
                         Register here
                     </Link>
                 </p>

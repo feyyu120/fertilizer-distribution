@@ -59,7 +59,8 @@ router.put('/:id/like', async (req, res) => {
         const post = await News.findById(req.params.id);
         if (!post) return res.status(404).json({ message: 'Post not found' });
 
-        const index = post.likedBy.indexOf(userId);
+        // Compare as strings since likedBy stores ObjectIds but userId comes as string
+        const index = post.likedBy.findIndex(id => id.toString() === userId.toString());
         if (index === -1) {
             post.likedBy.push(userId); // Like
         } else {
@@ -69,7 +70,8 @@ router.put('/:id/like', async (req, res) => {
         await post.save();
         res.json(post);
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        console.error('Like toggle error:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
 

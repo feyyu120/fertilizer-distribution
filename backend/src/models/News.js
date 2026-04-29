@@ -20,8 +20,7 @@ const newsSchema = new mongoose.Schema({
         default: "Admin"
     },
     likedBy: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: String
     }],
     comments: [{
         user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

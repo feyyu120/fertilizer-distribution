@@ -1,70 +1,173 @@
 const API = 'http://localhost:5000/api';
 
 export const api = {
-  // Dashboard
-  getStats: () => fetch(`${API}/admin/dashboard`).then(r => r.json()),
+  // ==================== AUTH ====================
+  register: (data: any) =>
+    fetch(`${API}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
 
-  // Farmers - all
+  login: (data: any) =>
+    fetch(`${API}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
+
+  getMe: (token: string) =>
+    fetch(`${API}/auth/me`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then(r => r.json()),
+
+  // ==================== ADMIN ====================
+  getStats: () =>
+    fetch(`${API}/admin/dashboard`).then(r => r.json()),
+  getDashboardStats: () =>
+    fetch(`${API}/admin/dashboard`).then(r => r.json()),
+
+  getPendingFarmers: () =>
+    fetch(`${API}/admin/pending-farmers`).then(r => r.json()),
+
   getAllFarmers: (status?: string) =>
     fetch(`${API}/admin/farmers${status ? `?status=${status}` : ''}`).then(r => r.json()),
-  // Farmers - pending only (used by overview)
-  getPendingFarmers: () => fetch(`${API}/admin/pending-farmers`).then(r => r.json()),
-  // Update farmer status
-  updateFarmerStatus: (id: string, status: string) =>
-    fetch(`${API}/admin/farmers/${id}/status`, {
-      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status })
-    }).then(r => r.json()),
-  // Legacy approve (still used by overview inline buttons)
+
   approveFarmer: (id: string, status: string) =>
     fetch(`${API}/admin/approve-farmer/${id}`, {
-      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status })
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
     }).then(r => r.json()),
-  // Delete farmer
+
+  updateFarmerStatus: (id: string, status: string) =>
+    fetch(`${API}/admin/farmers/${id}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    }).then(r => r.json()),
+
   deleteFarmer: (id: string) =>
     fetch(`${API}/admin/farmers/${id}`, { method: 'DELETE' }).then(r => r.json()),
 
-  // Fertilizers
-  getFertilizers: () => fetch(`${API}/fertilizers`).then(r => r.json()),
+  // ==================== FERTILIZERS ====================
+  getFertilizers: () =>
+    fetch(`${API}/fertilizers`).then(r => r.json()),
+
   addFertilizer: (data: any) =>
-    fetch(`${API}/fertilizers`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()),
+    fetch(`${API}/fertilizers`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
+
   updateFertilizer: (id: string, data: any) =>
-    fetch(`${API}/fertilizers/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()),
+    fetch(`${API}/fertilizers/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
+
   deleteFertilizer: (id: string) =>
     fetch(`${API}/fertilizers/${id}`, { method: 'DELETE' }).then(r => r.json()),
 
-  // Orders
-  getOrders: () => fetch(`${API}/orders`).then(r => r.json()),
-  updateOrderStatus: (id: string, status: string) =>
-    fetch(`${API}/orders/${id}/status`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) }).then(r => r.json()),
+  // ==================== ORDERS ====================
+  getOrders: () =>
+    fetch(`${API}/orders`).then(r => r.json()),
 
-  // News
-  getNews: () => fetch(`${API}/news`).then(r => r.json()),
+  createOrder: (data: any) =>
+    fetch(`${API}/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
+
+  updateOrderStatus: (id: string, status: string) =>
+    fetch(`${API}/orders/${id}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    }).then(r => r.json()),
+
+  // ==================== NEWS ====================
+  getNews: () =>
+    fetch(`${API}/news`).then(r => r.json()),
+
   addNews: (data: any) =>
-    fetch(`${API}/news`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()),
+    fetch(`${API}/news`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
+
   updateNews: (id: string, data: any) =>
-    fetch(`${API}/news/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()),
+    fetch(`${API}/news/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
+
   deleteNews: (id: string) =>
     fetch(`${API}/news/${id}`, { method: 'DELETE' }).then(r => r.json()),
-  toggleNewsLike: (id: string, userId: string) =>
-    fetch(`${API}/news/${id}/like`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId }) }).then(r => r.json()),
-  addNewsComment: (id: string, commentData: any) =>
-    fetch(`${API}/news/${id}/comment`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(commentData) }).then(r => r.json()),
 
-  // Messages
-  getMessages: () => fetch(`${API}/messages`).then(r => r.json()),
+  // Like — sends userId in the body (required by backend)
+  toggleNewsLike: (postId: string, userId: string) =>
+    fetch(`${API}/news/${postId}/like`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId })
+    }).then(r => r.json()),
+
+  // Add comment
+  addNewsComment: (postId: string, commentData: any) =>
+    fetch(`${API}/news/${postId}/comment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(commentData)
+    }).then(r => r.json()),
+
+  // ==================== MESSAGES ====================
+  getMessages: () =>
+    fetch(`${API}/messages`).then(r => r.json()),
+
   sendMessage: (data: any) =>
-    fetch(`${API}/messages`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()),
+    fetch(`${API}/messages`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
+
   replyMessage: (id: string, reply: string) =>
-    fetch(`${API}/messages/${id}/reply`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reply }) }).then(r => r.json()),
+    fetch(`${API}/messages/${id}/reply`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reply })
+    }).then(r => r.json()),
+
   deleteMessage: (id: string) =>
     fetch(`${API}/messages/${id}`, { method: 'DELETE' }).then(r => r.json()),
-  // Profile
-  updateProfile: (id: string, fullname: string) =>
-    fetch(`${API}/auth/profile`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, fullname }) }).then(r => r.json()),
-  deleteProfile: (id: string) =>
-    fetch(`${API}/auth/profile`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) }).then(r => r.json()),
-  getMyOrders: (id: string) =>
-    fetch(`${API}/auth/my-orders?id=${id}`).then(r => r.json()),
+
+  // ==================== USER SPECIFIC ====================
+  getMyOrders: (userId: string) =>
+    fetch(`${API}/orders/my-orders?userId=${userId}`).then(r => r.json()),
+
   getMyMessages: (phone: string) =>
-    fetch(`${API}/auth/my-messages?phone=${phone}`).then(r => r.json()),
+    fetch(`${API}/messages/my-messages?phone=${phone}`).then(r => r.json()),
+
+  // Profile
+  updateProfile: (id: string, data: any) =>
+    fetch(`${API}/auth/profile`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, ...data })
+    }).then(r => r.json()),
+
+  deleteProfile: (id: string) =>
+    fetch(`${API}/auth/profile`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
+    }).then(r => r.json()),
 };
+
+export default api;
