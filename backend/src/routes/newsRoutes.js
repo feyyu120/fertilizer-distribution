@@ -73,4 +73,26 @@ router.put('/:id/like', async (req, res) => {
     }
 });
 
+// Add comment
+router.post('/:id/comment', async (req, res) => {
+    try {
+        const { userId, userName, text } = req.body;
+        if (!userId || !text) return res.status(400).json({ message: 'User ID and text are required' });
+
+        const post = await News.findById(req.params.id);
+        if (!post) return res.status(404).json({ message: 'Post not found' });
+
+        post.comments.push({
+            user: userId,
+            userName: userName || 'Anonymous',
+            text: text
+        });
+
+        await post.save();
+        res.json(post);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 module.exports = router;

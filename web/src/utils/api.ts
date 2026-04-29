@@ -47,6 +47,8 @@ export const api = {
     fetch(`${API}/news/${id}`, { method: 'DELETE' }).then(r => r.json()),
   toggleNewsLike: (id: string, userId: string) =>
     fetch(`${API}/news/${id}/like`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId }) }).then(r => r.json()),
+  addNewsComment: (id: string, commentData: any) =>
+    fetch(`${API}/news/${id}/comment`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(commentData) }).then(r => r.json()),
 
   // Messages
   getMessages: () => fetch(`${API}/messages`).then(r => r.json()),

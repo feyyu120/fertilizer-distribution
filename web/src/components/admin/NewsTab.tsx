@@ -3,7 +3,7 @@ import { Newspaper, Plus, Edit2, Trash2, X, Save } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { api } from '../../utils/api';
 
-interface NewsPost { _id: string; title: string; caption: string; image: string; user: string; createdAt: string; }
+interface NewsPost { _id: string; title: string; caption: string; image: string; user: string; createdAt: string; comments?: any[]; }
 const empty = { title: '', caption: '', image: '', user: 'Admin' };
 
 const NewsTab = () => {
@@ -47,18 +47,33 @@ const NewsTab = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {posts.map(p => (
-            <div key={p._id} className="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 hover:border-green-700 transition-all">
+            <div key={p._id} className="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 flex flex-col transition-all">
               {p.image && <img src={p.image} alt={p.title} className="w-full h-40 object-cover" onError={e => (e.currentTarget.style.display = 'none')} />}
-              <div className="p-4">
+              <div className="p-4 flex flex-col flex-grow">
                 <p className="font-bold text-lg leading-tight mb-1">{p.title}</p>
                 <p className="text-gray-400 text-sm line-clamp-2">{p.caption}</p>
-                <div className="flex items-center justify-between mt-3">
+                <div className="flex items-center justify-between mt-3 mb-3">
                   <span className="text-xs text-gray-500">{p.user} • {new Date(p.createdAt).toLocaleDateString()}</span>
                   <div className="flex gap-2">
                     <button onClick={() => openEdit(p)} className="p-1.5 border border-gray-700 hover:bg-gray-800 rounded-lg transition"><Edit2 size={14} /></button>
                     <button onClick={() => handleDelete(p._id)} className="p-1.5 bg-red-600/70 hover:bg-red-700 rounded-lg transition"><Trash2 size={14} /></button>
                   </div>
                 </div>
+                
+                {/* Admin Comments View */}
+                {p.comments && p.comments.length > 0 && (
+                  <div className="mt-auto pt-3 border-t border-gray-800">
+                    <p className="text-xs font-semibold text-gray-500 mb-2">Comments ({p.comments.length})</p>
+                    <div className="space-y-2 max-h-[100px] overflow-y-auto custom-scrollbar pr-1">
+                      {p.comments.map((c: any, i: number) => (
+                        <div key={i} className="bg-gray-800/50 p-2 rounded-lg">
+                          <p className="text-xs font-medium text-gray-300">{c.userName}</p>
+                          <p className="text-xs text-gray-400 line-clamp-2">{c.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}
