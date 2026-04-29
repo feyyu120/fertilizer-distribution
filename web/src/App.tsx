@@ -34,7 +34,7 @@ function App() {
 
 // Layout for normal users (with Navbar)
 const UserLayout = () => (
-  <div className="min-h-screen bg-gray-950 text-white">
+  <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
     <Navbar />
     <Routes>
       <Route path="/" element={<Home />} />

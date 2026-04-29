@@ -1,35 +1,18 @@
 @import "tailwindcss";
 
-/* Light mode overrides */
-html.light-mode {
-  --tw-bg-opacity: 1;
-  background-color: #f3f4f6 !important;
-  color: #111827 !important;
+@theme {
+  /* You can put theme variables here if needed */
 }
 
-html.light-mode .bg-gray-950 { background-color: #f3f4f6 !important; }
-html.light-mode .bg-gray-900 { background-color: #ffffff !important; }
-html.light-mode .bg-black { background-color: #ffffff !important; }
-html.light-mode .bg-gray-800 { background-color: #f9fafb !important; }
+/* Enable class-based dark mode in Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
 
-html.light-mode .border-gray-800 { border-color: #e5e7eb !important; }
-html.light-mode .border-gray-700 { border-color: #d1d5db !important; }
-
-html.light-mode .text-white { color: #111827 !important; }
-html.light-mode .text-gray-200 { color: #374151 !important; }
-html.light-mode .text-gray-300 { color: #4b5563 !important; }
-html.light-mode .text-gray-400 { color: #6b7280 !important; }
-html.light-mode .text-gray-500 { color: #9ca3af !important; }
-html.light-mode .text-gray-600 { color: #4b5563 !important; }
-
-html.light-mode .hover\:bg-gray-800:hover { background-color: #e5e7eb !important; }
-html.light-mode .hover\:bg-gray-700:hover { background-color: #d1d5db !important; }
-
-html.light-mode .hover\:text-white:hover { color: #000000 !important; }
-
-.nav-bg {
-  background-color: rgba(3, 7, 18, 0.95);
-}
-html.light-mode .nav-bg {
-  background-color: rgba(243, 244, 246, 0.95) !important;
+/* Base body styles for smooth transitions */
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 transition-colors duration-300;
+  }
+  .dark body {
+    @apply bg-gray-950 text-gray-100;
+  }
 }

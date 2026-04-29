@@ -1,32 +1,36 @@
 import { useEffect, useState } from 'react';
 
 export const useTheme = () => {
-  const [isLightMode, setIsLightMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
+    // Check local storage or system preference
     const savedTheme = localStorage.getItem('theme');
-    const wantsLight = savedTheme === 'light';
-    setIsLightMode(wantsLight);
-    if (wantsLight) {
-      document.documentElement.classList.add('light-mode');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    const wantsDark = savedTheme === 'dark' || (!savedTheme && systemDark);
+    setIsDarkMode(wantsDark);
+    
+    if (wantsDark) {
+      document.documentElement.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('light-mode');
+      document.documentElement.classList.remove('dark');
     }
   }, []);
 
   const toggleTheme = () => {
-    setIsLightMode(prev => {
+    setIsDarkMode(prev => {
       const newMode = !prev;
       if (newMode) {
-        document.documentElement.classList.add('light-mode');
-        localStorage.setItem('theme', 'light');
-      } else {
-        document.documentElement.classList.remove('light-mode');
+        document.documentElement.classList.add('dark');
         localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
       }
       return newMode;
     });
   };
 
-  return { isLightMode, toggleTheme };
+  return { isLightMode: !isDarkMode, toggleTheme };
 };

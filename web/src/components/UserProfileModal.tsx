@@ -81,38 +81,38 @@ const UserProfileModal = ({ isOpen, onClose, user, onLogout }: UserProfileModalP
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-            <div className="bg-gray-900 border border-gray-800 rounded-3xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden shadow-2xl">
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden shadow-2xl transition-colors duration-300">
                 
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-gray-800 bg-gray-900/50">
-                    <h2 className="text-2xl font-bold flex items-center gap-3">
-                        <div className="w-10 h-10 bg-green-900/50 rounded-full flex items-center justify-center text-green-500">
+                <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 transition-colors duration-300">
+                    <h2 className="text-2xl font-bold flex items-center gap-3 text-gray-900 dark:text-white transition-colors duration-300">
+                        <div className="w-10 h-10 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center text-green-600 dark:text-green-500">
                             <User size={20} />
                         </div>
                         My Profile
                     </h2>
-                    <button onClick={onClose} className="text-gray-400 hover:text-white transition bg-gray-800 p-2 rounded-full">
+                    <button onClick={onClose} className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition bg-gray-100 dark:bg-gray-800 p-2 rounded-full">
                         <X size={20} />
                     </button>
                 </div>
 
                 {/* Tabs */}
-                <div className="flex border-b border-gray-800 px-6">
+                <div className="flex border-b border-gray-200 dark:border-gray-800 px-6 overflow-x-auto custom-scrollbar">
                     <button
                         onClick={() => setActiveTab('profile')}
-                        className={`py-4 px-6 font-medium border-b-2 transition-all ${activeTab === 'profile' ? 'border-green-500 text-green-400' : 'border-transparent text-gray-400 hover:text-gray-200'}`}
+                        className={`py-4 px-6 font-medium border-b-2 transition-all whitespace-nowrap ${activeTab === 'profile' ? 'border-green-500 text-green-600 dark:text-green-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'}`}
                     >
                         Account Details
                     </button>
                     <button
                         onClick={() => setActiveTab('orders')}
-                        className={`py-4 px-6 font-medium border-b-2 transition-all flex items-center gap-2 ${activeTab === 'orders' ? 'border-green-500 text-green-400' : 'border-transparent text-gray-400 hover:text-gray-200'}`}
+                        className={`py-4 px-6 font-medium border-b-2 transition-all flex items-center gap-2 whitespace-nowrap ${activeTab === 'orders' ? 'border-green-500 text-green-600 dark:text-green-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'}`}
                     >
                         <Package size={16} /> Order History
                     </button>
                     <button
                         onClick={() => setActiveTab('messages')}
-                        className={`py-4 px-6 font-medium border-b-2 transition-all flex items-center gap-2 ${activeTab === 'messages' ? 'border-green-500 text-green-400' : 'border-transparent text-gray-400 hover:text-gray-200'}`}
+                        className={`py-4 px-6 font-medium border-b-2 transition-all flex items-center gap-2 whitespace-nowrap ${activeTab === 'messages' ? 'border-green-500 text-green-600 dark:text-green-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'}`}
                     >
                         <MessageSquare size={16} /> My Messages
                     </button>
@@ -124,49 +124,49 @@ const UserProfileModal = ({ isOpen, onClose, user, onLogout }: UserProfileModalP
                     {/* Profile Tab */}
                     {activeTab === 'profile' && (
                         <div className="space-y-8 animate-in fade-in zoom-in-95 duration-200">
-                            <div className="bg-gray-800/50 p-6 rounded-2xl border border-gray-700">
+                            <div className="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 transition-colors duration-300">
                                 <div className="flex justify-between items-center mb-6">
-                                    <h3 className="text-lg font-semibold text-gray-200">Personal Information</h3>
+                                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Personal Information</h3>
                                     {!isEditing ? (
-                                        <button onClick={() => setIsEditing(true)} className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition px-3 py-1.5 bg-blue-500/10 rounded-lg">
+                                        <button onClick={() => setIsEditing(true)} className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition px-3 py-1.5 bg-blue-50 dark:bg-blue-500/10 rounded-lg">
                                             <Edit2 size={16} /> Edit Name
                                         </button>
                                     ) : (
-                                        <button onClick={() => setIsEditing(false)} className="text-sm text-gray-400 hover:text-white transition">Cancel</button>
+                                        <button onClick={() => setIsEditing(false)} className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Cancel</button>
                                     )}
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <p className="text-sm text-gray-400 mb-1">Full Name</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Full Name</p>
                                         {isEditing ? (
                                             <div className="flex items-center gap-2">
                                                 <input
                                                     type="text"
                                                     value={newName}
                                                     onChange={(e) => setNewName(e.target.value)}
-                                                    className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-green-500"
+                                                    className="w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-900 dark:text-white focus:outline-none focus:border-green-500 transition-colors"
                                                 />
                                                 <button onClick={handleUpdateProfile} disabled={isSaving} className="p-2 bg-green-600 hover:bg-green-700 rounded-lg text-white disabled:opacity-50 transition">
                                                     <Save size={20} />
                                                 </button>
                                             </div>
                                         ) : (
-                                            <p className="text-lg font-medium text-white">{user.fullname}</p>
+                                            <p className="text-lg font-medium text-gray-900 dark:text-white">{user.fullname}</p>
                                         )}
                                     </div>
                                     <div>
-                                        <p className="text-sm text-gray-400 mb-1">Phone Number</p>
-                                        <p className="text-lg font-medium text-white">{user.phone}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Phone Number</p>
+                                        <p className="text-lg font-medium text-gray-900 dark:text-white">{user.phone}</p>
                                     </div>
                                     <div>
-                                        <p className="text-sm text-gray-400 mb-1">Email Address</p>
-                                        <p className="text-lg font-medium text-white">{user.email}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Email Address</p>
+                                        <p className="text-lg font-medium text-gray-900 dark:text-white">{user.email}</p>
                                     </div>
                                     <div>
-                                        <p className="text-sm text-gray-400 mb-1">Account Status</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Account Status</p>
                                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                            user.status === 'approved' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'
+                                            user.status === 'approved' ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400' : 'bg-yellow-100 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-400'
                                         }`}>
                                             {user.status.toUpperCase()}
                                         </span>
@@ -174,16 +174,16 @@ const UserProfileModal = ({ isOpen, onClose, user, onLogout }: UserProfileModalP
                                 </div>
                             </div>
 
-                            <div className="pt-6 border-t border-gray-800 flex justify-between items-center">
+                            <div className="pt-6 border-t border-gray-200 dark:border-gray-800 flex justify-between items-center transition-colors">
                                 <button
                                     onClick={onLogout}
-                                    className="flex items-center gap-2 px-5 py-2.5 bg-gray-800 hover:bg-gray-700 rounded-xl text-white font-medium transition"
+                                    className="flex items-center gap-2 px-5 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl text-gray-700 dark:text-white font-medium transition"
                                 >
                                     <LogOut size={18} /> Sign Out
                                 </button>
                                 <button
                                     onClick={handleDeleteAccount}
-                                    className="flex items-center gap-2 px-5 py-2.5 bg-red-900/30 hover:bg-red-900/50 border border-red-900/50 text-red-400 rounded-xl font-medium transition"
+                                    className="flex items-center gap-2 px-5 py-2.5 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 rounded-xl font-medium transition"
                                 >
                                     <Trash2 size={18} /> Delete Account
                                 </button>
@@ -195,26 +195,26 @@ const UserProfileModal = ({ isOpen, onClose, user, onLogout }: UserProfileModalP
                     {activeTab === 'orders' && (
                         <div className="animate-in fade-in zoom-in-95 duration-200">
                             {loadingHistory ? (
-                                <div className="text-center py-10 text-gray-400">Loading orders...</div>
+                                <div className="text-center py-10 text-gray-500 dark:text-gray-400">Loading orders...</div>
                             ) : orders.length === 0 ? (
-                                <div className="text-center py-12 bg-gray-800/30 rounded-2xl border border-gray-800">
-                                    <Package className="mx-auto text-gray-600 mb-4" size={48} />
-                                    <p className="text-gray-400">You haven't placed any orders yet.</p>
+                                <div className="text-center py-12 bg-gray-50 dark:bg-gray-800/30 rounded-2xl border border-gray-200 dark:border-gray-800 transition-colors">
+                                    <Package className="mx-auto text-gray-400 dark:text-gray-600 mb-4" size={48} />
+                                    <p className="text-gray-500 dark:text-gray-400">You haven't placed any orders yet.</p>
                                 </div>
                             ) : (
                                 <div className="space-y-4">
                                     {orders.map((order: any) => (
-                                        <div key={order._id} className="bg-gray-800/50 border border-gray-700 p-5 rounded-xl flex flex-col md:flex-row justify-between md:items-center gap-4">
+                                        <div key={order._id} className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 p-5 rounded-xl flex flex-col md:flex-row justify-between md:items-center gap-4 transition-colors">
                                             <div>
-                                                <p className="text-xs text-gray-400 mb-1">Order #{order._id.slice(-6)} • {new Date(order.createdAt).toLocaleDateString()}</p>
-                                                <h4 className="font-semibold text-lg">{order.fertilizers.map((f:any) => f.name).join(', ')}</h4>
-                                                <p className="text-gray-400">{order.totalAmount} ETB</p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Order #{order._id.slice(-6)} • {new Date(order.createdAt).toLocaleDateString()}</p>
+                                                <h4 className="font-semibold text-lg text-gray-900 dark:text-white">{order.fertilizers.map((f:any) => f.name).join(', ')}</h4>
+                                                <p className="text-gray-600 dark:text-gray-400">{order.totalAmount} ETB</p>
                                             </div>
                                             <span className={`px-4 py-1.5 rounded-full text-xs font-bold text-center ${
-                                                order.status === 'delivered' ? 'bg-green-500/20 text-green-400' :
-                                                order.status === 'processing' ? 'bg-blue-500/20 text-blue-400' :
-                                                order.status === 'cancelled' ? 'bg-red-500/20 text-red-400' :
-                                                'bg-yellow-500/20 text-yellow-400'
+                                                order.status === 'delivered' ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400' :
+                                                order.status === 'processing' ? 'bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400' :
+                                                order.status === 'cancelled' ? 'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400' :
+                                                'bg-yellow-100 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-400'
                                             }`}>
                                                 {order.status.toUpperCase()}
                                             </span>
@@ -229,34 +229,34 @@ const UserProfileModal = ({ isOpen, onClose, user, onLogout }: UserProfileModalP
                     {activeTab === 'messages' && (
                         <div className="animate-in fade-in zoom-in-95 duration-200">
                             {loadingHistory ? (
-                                <div className="text-center py-10 text-gray-400">Loading messages...</div>
+                                <div className="text-center py-10 text-gray-500 dark:text-gray-400">Loading messages...</div>
                             ) : messages.length === 0 ? (
-                                <div className="text-center py-12 bg-gray-800/30 rounded-2xl border border-gray-800">
-                                    <MessageSquare className="mx-auto text-gray-600 mb-4" size={48} />
-                                    <p className="text-gray-400">You haven't sent any messages.</p>
+                                <div className="text-center py-12 bg-gray-50 dark:bg-gray-800/30 rounded-2xl border border-gray-200 dark:border-gray-800 transition-colors">
+                                    <MessageSquare className="mx-auto text-gray-400 dark:text-gray-600 mb-4" size={48} />
+                                    <p className="text-gray-500 dark:text-gray-400">You haven't sent any messages.</p>
                                 </div>
                             ) : (
                                 <div className="space-y-4">
                                     {messages.map((msg: any) => (
-                                        <div key={msg._id} className="bg-gray-800/50 border border-gray-700 p-5 rounded-xl space-y-4">
+                                        <div key={msg._id} className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 p-5 rounded-xl space-y-4 transition-colors">
                                             <div className="flex justify-between items-start">
                                                 <div>
-                                                    <p className="text-xs text-gray-400 mb-1">{new Date(msg.createdAt).toLocaleDateString()}</p>
-                                                    <p className="text-gray-200">{msg.message}</p>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{new Date(msg.createdAt).toLocaleDateString()}</p>
+                                                    <p className="text-gray-800 dark:text-gray-200">{msg.message}</p>
                                                 </div>
                                                 <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                                    msg.status === 'replied' ? 'bg-green-500/20 text-green-400' :
-                                                    msg.status === 'read' ? 'bg-blue-500/20 text-blue-400' :
-                                                    'bg-gray-700 text-gray-300'
+                                                    msg.status === 'replied' ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400' :
+                                                    msg.status === 'read' ? 'bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400' :
+                                                    'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
                                                 }`}>
                                                     {msg.status.toUpperCase()}
                                                 </span>
                                             </div>
                                             {msg.reply && (
-                                                <div className="bg-gray-900 p-4 rounded-lg border border-gray-700/50 mt-4 relative">
-                                                    <div className="absolute top-0 left-4 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[8px] border-b-gray-900 -mt-2"></div>
-                                                    <p className="text-xs text-green-400 font-semibold mb-1">Admin Reply</p>
-                                                    <p className="text-gray-300">{msg.reply}</p>
+                                                <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700/50 mt-4 relative transition-colors">
+                                                    <div className="absolute top-0 left-4 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[8px] border-b-white dark:border-b-gray-900 -mt-2"></div>
+                                                    <p className="text-xs text-green-600 dark:text-green-400 font-semibold mb-1">Admin Reply</p>
+                                                    <p className="text-gray-700 dark:text-gray-300">{msg.reply}</p>
                                                 </div>
                                             )}
                                         </div>
