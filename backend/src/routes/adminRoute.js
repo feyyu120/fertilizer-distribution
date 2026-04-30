@@ -11,7 +11,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 // Email transporter (Explicit Gmail SMTP for better cloud compatibility)
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
+    port: 587,
     secure: true, // Use SSL/TLS
     auth: {
         user: process.env.EMAIL_USER,
@@ -25,7 +25,7 @@ const sendStatusEmail = async (email, fullname, status) => {
         return;
     }
     const frontendUrl = process.env.FRONTEND_URL || 'https://fertilizer-distribution.vercel.app';
-    
+
     let subject, title, body, color, btnText;
     if (status === 'approved') {
         subject = '✅ Account Approved — FertilizerHub';
