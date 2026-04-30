@@ -93,6 +93,9 @@ export const api = {
   getNews: () =>
     fetch(`${API}/news`).then(r => r.json()),
 
+  getMyPosts: (userId: string) =>
+    fetch(`${API}/news/my-posts?userId=${userId}`).then(r => r.json()),
+
   addNews: (data: any) =>
     fetch(`${API}/news`, {
       method: 'POST',
@@ -160,6 +163,13 @@ export const api = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, ...data })
+    }).then(r => r.json()),
+
+  markFertilizersRead: (id: string) =>
+    fetch(`${API}/auth/read-fertilizers`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
     }).then(r => r.json()),
 
   deleteProfile: (id: string) =>

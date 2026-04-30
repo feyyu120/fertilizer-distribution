@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
     idPhoto: { type: String, default: "" },
     role: { type: String, enum: ['farmer', 'admin'], default: 'farmer' },
     status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
+    lastViewedFertilizersAt: { type: Date, default: Date.now },
     createdAt: { type: Date, default: Date.now }
 });
 

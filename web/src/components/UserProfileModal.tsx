@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, User, Package, MessageSquare, Edit2, Trash2, Save, LogOut } from 'lucide-react';
+import { X, User, Package, MessageSquare, Edit2, Trash2, Save, LogOut, FileText } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { api } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,7 @@ interface UserProfileModalProps {
 const UserProfileModal = ({ isOpen, onClose, user, onLogout }: UserProfileModalProps) => {
     const navigate = useNavigate();
     const { updateUser } = useAuth();
-    const [activeTab, setActiveTab] = useState<'profile' | 'orders' | 'messages'>('profile');
+    const [activeTab, setActiveTab] = useState<'profile' | 'orders' | 'messages' | 'posts'>('profile');
     
     // Profile Edit State
     const [isEditing, setIsEditing] = useState(false);
@@ -25,6 +25,7 @@ const UserProfileModal = ({ isOpen, onClose, user, onLogout }: UserProfileModalP
     // History Data
     const [orders, setOrders] = useState<any[]>([]);
     const [messages, setMessages] = useState<any[]>([]);
+    const [posts, setPosts] = useState<any[]>([]);
     const [loadingHistory, setLoadingHistory] = useState(false);
 
     useEffect(() => {
@@ -37,12 +38,14 @@ const UserProfileModal = ({ isOpen, onClose, user, onLogout }: UserProfileModalP
     const fetchHistory = async () => {
         setLoadingHistory(true);
         try {
-            const [ordersData, messagesData] = await Promise.all([
+            const [ordersData, messagesData, postsData] = await Promise.all([
                 api.getMyOrders(user.id),
-                api.getMyMessages(user.phone)
+                api.getMyMessages(user.phone),
+                api.getMyPosts(user.id)
             ]);
             setOrders(Array.isArray(ordersData) ? ordersData : []);
             setMessages(Array.isArray(messagesData) ? messagesData : []);
+            setPosts(Array.isArray(postsData) ? postsData : []);
         } catch (error) {
             console.error("Failed to fetch history:", error);
         } finally {
@@ -115,6 +118,12 @@ const UserProfileModal = ({ isOpen, onClose, user, onLogout }: UserProfileModalP
                         className={`py-4 px-6 font-medium border-b-2 transition-all flex items-center gap-2 whitespace-nowrap ${activeTab === 'messages' ? 'border-green-500 text-green-600 dark:text-green-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'}`}
                     >
                         <MessageSquare size={16} /> My Messages
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('posts')}
+                        className={`py-4 px-6 font-medium border-b-2 transition-all flex items-center gap-2 whitespace-nowrap ${activeTab === 'posts' ? 'border-green-500 text-green-600 dark:text-green-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'}`}
+                    >
+                        <FileText size={16} /> My Posts
                     </button>
                 </div>
 
@@ -259,6 +268,38 @@ const UserProfileModal = ({ isOpen, onClose, user, onLogout }: UserProfileModalP
                                                     <p className="text-gray-700 dark:text-gray-300">{msg.reply}</p>
                                                 </div>
                                             )}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Posts Tab */}
+                    {activeTab === 'posts' && (
+                        <div className="animate-in fade-in zoom-in-95 duration-200">
+                            {loadingHistory ? (
+                                <div className="text-center py-10 text-gray-500 dark:text-gray-400">Loading posts...</div>
+                            ) : posts.length === 0 ? (
+                                <div className="text-center py-12 bg-gray-50 dark:bg-gray-800/30 rounded-2xl border border-gray-200 dark:border-gray-800 transition-colors">
+                                    <FileText className="mx-auto text-gray-400 dark:text-gray-600 mb-4" size={48} />
+                                    <p className="text-gray-500 dark:text-gray-400">You haven't created any posts yet.</p>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    {posts.map((post: any) => (
+                                        <div key={post._id} className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 p-5 rounded-xl space-y-4 transition-colors">
+                                            <div className="flex justify-between items-start">
+                                                <div>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{new Date(post.createdAt).toLocaleDateString()}</p>
+                                                    <h4 className="font-semibold text-lg text-gray-900 dark:text-white">{post.title}</h4>
+                                                    <p className="text-gray-700 dark:text-gray-300 line-clamp-2 mt-1">{post.caption}</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                                                <span>❤️ {post.likedBy?.length || 0} Likes</span>
+                                                <span>💬 {post.comments?.length || 0} Comments</span>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>

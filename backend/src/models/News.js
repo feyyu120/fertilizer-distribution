@@ -19,6 +19,11 @@ const newsSchema = new mongoose.Schema({
         type: String,           // Who posted (e.g., "Oromia Agriculture Office", "Admin")
         default: "Admin"
     },
+    userId: {
+        type: String,
+        required: true,
+        default: "admin"
+    },
     likedBy: [{
         type: String
     }],

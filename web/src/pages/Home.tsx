@@ -55,7 +55,7 @@ const Home = () => {
                         </p>
 
                         <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold leading-tight mb-8 text-white drop-shadow-lg">
-                            FairPrice <br />
+                            Fair <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">Fertilizer Distribution</span>
                         </h1>
 
@@ -147,7 +147,7 @@ const Home = () => {
                                 <p className="text-gray-600 dark:text-gray-400">Valid until end of this month across Oromia region.</p>
                             </div>
                             <button className="mt-10 self-start text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-500 font-bold flex items-center gap-2">
-                                Claim Offer <ArrowRight size={18}/>
+                                Claim Offer <ArrowRight size={18} />
                             </button>
                         </div>
                     </div>

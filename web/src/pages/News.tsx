@@ -1,4 +1,4 @@
-import { Heart, MessageCircle, Share2, User, Send, X } from 'lucide-react';
+import { Heart, MessageCircle, Share2, User, Send, X, Search, Icon, UserCog } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
@@ -13,6 +13,7 @@ const News = () => {
     const [commentInputs, setCommentInputs] = useState<{ [key: string]: string }>({});
     const [submittingComment, setSubmittingComment] = useState<string | null>(null);
     const [selectedUser, setSelectedUser] = useState<any>(null); // For profile modal
+    const [searchQuery, setSearchQuery] = useState('');
 
     const { user: currentUser } = useAuth();
     const navigate = useNavigate();
@@ -126,8 +127,22 @@ const News = () => {
                     Agricultural News & Updates
                 </h1>
 
+                {/* Search Bar */}
+                <div className="mb-10 max-w-2xl mx-auto relative">
+                    <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                        <Search className="text-gray-400 dark:text-gray-500" size={20} />
+                    </div>
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search news by title..."
+                        className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full py-4 pl-14 pr-6 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent shadow-lg transition-all"
+                    />
+                </div>
+
                 <div className="space-y-10">
-                    {posts.map((post) => {
+                    {posts.filter(post => post.title.toLowerCase().includes(searchQuery.toLowerCase())).map((post) => {
                         const uid = currentUser?._id || currentUser?.id;
                         const isLiked = uid && post.likedBy?.some((id: any) => id.toString() === uid);
                         const likeCount = post.likedBy?.length || 0;
@@ -149,7 +164,7 @@ const News = () => {
                                             onClick={() => openProfile(post)}
                                             className="w-14 h-14 bg-gray-100 dark:bg-gray-800 hover:bg-green-600 rounded-2xl flex items-center justify-center text-3xl transition-all active:scale-95"
                                         >
-                                            {post.user === 'Admin' ? '👨‍💼' : '🌾'}
+                                            {post.user === 'Admin' ? <UserCog /> : <User />}
                                         </button>
                                         <div>
                                             <h3 className="font-bold text-xl text-gray-900 dark:text-white transition-colors">{post.user}</h3>
@@ -170,7 +185,7 @@ const News = () => {
                                             alt={post.title}
                                             className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-black/90" />
+                                        <div className="absolute inset-0  from-black/30 via-black/60 to-black/90" />
                                     </div>
                                 )}
 

@@ -13,11 +13,24 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Create new news post (Admin only)
+// Get user's news posts
+router.get('/my-posts', async (req, res) => {
+    try {
+        const { userId } = req.query;
+        if (!userId) return res.status(400).json({ message: 'User ID is required' });
+        
+        const news = await News.find({ userId }).sort({ createdAt: -1 });
+        res.json(news);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Create new news post (Admin & Farmers)
 router.post('/', async (req, res) => {
     try {
-        const { title, caption, image, user } = req.body;
-        const newsPost = new News({ title, caption, image, user });
+        const { title, caption, image, user, userId } = req.body;
+        const newsPost = new News({ title, caption, image, user, userId });
         await newsPost.save();
         res.status(201).json(newsPost);
     } catch (error) {
