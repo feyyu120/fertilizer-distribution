@@ -5,10 +5,11 @@ const cors = require('cors');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
 const dns = require("node:dns")
+const keepAlive = require('./cron/keepAlive');
 
 dotenv.config();
 connectDB();
-
+keepAlive.start();
 const app = express();
 
 // Middleware
