@@ -102,6 +102,10 @@ const Navbar = () => {
 
     if (user) {
         navLinks.splice(2, 0, { path: '/create-post', label: 'Create post' });
+        // Add Dashboard link for admins
+        if (user.role === 'admin') {
+            navLinks.push({ path: '/admin', label: 'Dashboard' });
+        }
     }
 
     const firstName = user?.fullname ? user.fullname.split(' ')[0] : 'User';
@@ -234,15 +238,6 @@ const Navbar = () => {
 
                         {/* Mobile Menu Button */}
                         <div className="md:hidden flex items-center gap-2">
-                            <ThemeToggle />
-                            {user && (
-                                <button
-                                    onClick={() => { setIsProfileModalOpen(true); closeMenu(); }}
-                                    className="p-1.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800/50"
-                                >
-                                    <User size={22} />
-                                </button>
-                            )}
                             <button
                                 onClick={toggleMenu}
                                 className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors"
@@ -273,25 +268,47 @@ const Navbar = () => {
 
                             {/* Mobile Actions */}
                             <div className="mt-8 flex flex-col gap-3 px-2 border-t border-gray-200 dark:border-gray-800 pt-6">
-                                <button
-                                    onClick={toggleLanguage}
-                                    className="flex items-center justify-center gap-3 py-3.5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-medium"
-                                >
-                                    <Globe size={20} />
-                                    {language === 'en' ? 'Switch to አማርኛ' : 'Switch to English'}
-                                </button>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div className="flex items-center justify-between px-4 py-3.5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl">
+                                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Dark Mode</span>
+                                        <ThemeToggle />
+                                    </div>
+                                    <button
+                                        onClick={toggleLanguage}
+                                        className="flex items-center justify-center gap-2 py-3.5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-medium text-sm"
+                                    >
+                                        <Globe size={18} />
+                                        {language === 'en' ? 'አማርኛ' : 'English'}
+                                    </button>
+                                </div>
 
-                                {!user && (
+                                {user ? (
+                                    <div className="flex flex-col gap-3 mt-2">
+                                        <button
+                                            onClick={() => { setIsProfileModalOpen(true); closeMenu(); }}
+                                            className="flex items-center gap-3 px-5 py-4 bg-green-50 dark:bg-green-500/10 border border-green-100 dark:border-green-500/20 rounded-2xl text-green-700 dark:text-green-400 font-bold transition-all active:scale-95"
+                                        >
+                                            <div className="w-10 h-10 bg-green-100 dark:bg-green-900/40 rounded-full flex items-center justify-center">
+                                                <User size={20} />
+                                            </div>
+                                            <div className="text-left">
+                                                <p className="text-sm leading-none mb-1">My Profile</p>
+                                                <p className="text-[10px] font-medium opacity-70 truncate max-w-[150px]">{user.fullname}</p>
+                                            </div>
+                                            <LogOut size={18} className="ml-auto text-red-500" onClick={(e) => { e.stopPropagation(); handleLogout(); }} />
+                                        </button>
+                                    </div>
+                                ) : (
                                     <div className="grid grid-cols-2 gap-3 mt-2">
                                         <button
                                             onClick={() => { navigate('/login'); closeMenu(); }}
-                                            className="py-3.5 text-center border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-2xl transition-colors font-medium"
+                                            className="py-4 text-center border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-2xl transition-colors font-bold text-sm"
                                         >
                                             Sign in
                                         </button>
                                         <button
                                             onClick={() => { navigate('/register'); closeMenu(); }}
-                                            className="py-3.5 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-medium transition-colors shadow-lg shadow-green-900/20"
+                                            className="py-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-bold text-sm transition-colors shadow-lg shadow-green-900/20 active:scale-95"
                                         >
                                             Get Started
                                         </button>
