@@ -10,15 +10,12 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
 // Email transporter (Explicit Gmail SMTP for better cloud compatibility)
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: true, // Use SSL/TLS
+    service: 'gmail',        // Recommended for Gmail
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
-    },
+    }
 });
-
 const sendStatusEmail = async (email, fullname, status) => {
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
         console.warn('⚠️ Email credentials missing. Skipping email.');
