@@ -8,9 +8,11 @@ const nodemailer = require('nodemailer');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
-// Email transporter (Gmail App Password)
+// Email transporter (Explicit Gmail SMTP for better cloud compatibility)
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // Use SSL/TLS
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -18,33 +20,55 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendStatusEmail = async (email, fullname, status) => {
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) return;
-    const isApproved = status === 'approved';
-    try {
-        await transporter.sendMail({
-            from: `"FertilizerHub" <${process.env.EMAIL_USER}>`,
-            to: email,
-            subject: isApproved ? '✅ Account Approved — FertilizerHub' : '❌ Account Rejected — FertilizerHub',
-            html: `
-                <div style="font-family:sans-serif;max-width:500px;margin:auto;padding:30px;background:#f9f9f9;border-radius:12px">
-                    <h2 style="color:${isApproved ? '#16a34a' : '#dc2626'}">
-                        ${isApproved ? '✅ Your Account is Approved!' : '❌ Account Not Approved'}
-                    </h2>
-                    <p>Dear <strong>${fullname}</strong>,</p>
-                    <p>${isApproved
-                        ? 'Congratulations! Your FertilizerHub account has been verified. You can now log in and place fertilizer orders.'
-                        : 'Unfortunately, your FertilizerHub registration could not be approved at this time. Please contact support for more information.'
-                    }</p>
-                    <a href="http://localhost:5173/login" style="display:inline-block;margin-top:16px;padding:12px 24px;background:${isApproved ? '#16a34a' : '#6b7280'};color:#fff;border-radius:8px;text-decoration:none;font-weight:600">
-                        ${isApproved ? 'Login Now' : 'Contact Support'}
-                    </a>
-                    <p style="margin-top:24px;font-size:12px;color:#888">FertilizerHub — Ethiopia's Digital Fertilizer Distribution Platform</p>
-                </div>
-            `,
-        });
-    } catch (err) {
-        console.error('Email send error:', err.message);
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        console.warn('⚠️ Email credentials missing. Skipping email.');
+        return;
     }
+    const frontendUrl = process.env.FRONTEND_URL || 'https://fertilizer-distribution.vercel.app';
+    
+    let subject, title, body, color, btnText;
+    if (status === 'approved') {
+        subject = '✅ Account Approved — FertilizerHub';
+        title = '✅ Your Account is Approved!';
+        body = 'Congratulations! Your FertilizerHub account has been verified. You can now log in and place fertilizer orders.';
+        color = '#16a34a';
+        btnText = 'Login Now';
+    } else if (status === 'rejected') {
+        subject = '❌ Account Rejected — FertilizerHub';
+        title = '❌ Account Not Approved';
+        body = 'Unfortunately, your FertilizerHub registration could not be approved at this time. Please contact support for more information.';
+        color = '#dc2626';
+        btnText = 'Contact Support';
+    } else {
+        subject = '⏳ Account Status Update — FertilizerHub';
+        title = '⏳ Account Set to Pending';
+        body = 'Your account status has been updated to pending. We are currently reviewing your details. We will notify you once the verification is complete.';
+        color = '#f59e0b';
+        btnText = 'Visit Website';
+    }
+
+    console.log(`📡 Attempting to send ${status} email to: ${email}...`);
+    // We don't await this in the route handlers to keep them non-blocking
+    transporter.sendMail({
+        from: `"FertilizerHub" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject,
+        html: `
+            <div style="font-family:sans-serif;max-width:500px;margin:auto;padding:30px;background:#f9f9f9;border-radius:12px">
+                <h2 style="color:${color}">${title}</h2>
+                <p>Dear <strong>${fullname}</strong>,</p>
+                <p>${body}</p>
+                <a href="${frontendUrl}/login" style="display:inline-block;margin-top:16px;padding:12px 24px;background:${color};color:#fff;border-radius:8px;text-decoration:none;font-weight:600">
+                    ${btnText}
+                </a>
+                <p style="margin-top:24px;font-size:12px;color:#888">FertilizerHub — Ethiopia's Digital Fertilizer Distribution Platform</p>
+            </div>
+        `,
+    }).then(() => {
+        console.log(`📧 Email sent successfully to ${email} (${status})`);
+    }).catch(err => {
+        console.error('❌ Email send error:', err.message);
+    });
 };
 
 // Get Dashboard Stats
@@ -92,8 +116,8 @@ router.put('/farmers/:id/status', async (req, res) => {
         const { status } = req.body;
         const user = await User.findByIdAndUpdate(req.params.id, { status }, { new: true });
         if (!user) return res.status(404).json({ message: 'Farmer not found' });
-        // Send email notification
-        await sendStatusEmail(user.email, user.fullname, status);
+        // Send email notification (non-blocking)
+        sendStatusEmail(user.email, user.fullname, status);
         res.json({ message: `Farmer ${status}`, user });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
@@ -106,7 +130,7 @@ router.put('/approve-farmer/:id', async (req, res) => {
         const { status } = req.body;
         const user = await User.findByIdAndUpdate(req.params.id, { status }, { new: true });
         if (!user) return res.status(404).json({ message: 'Farmer not found' });
-        await sendStatusEmail(user.email, user.fullname, status);
+        sendStatusEmail(user.email, user.fullname, status);
         res.json({ message: `Farmer ${status}`, user });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });

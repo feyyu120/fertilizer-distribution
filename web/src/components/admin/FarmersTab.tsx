@@ -20,11 +20,17 @@ const FarmersTab = () => {
   useEffect(() => { load(); }, []);
 
   const handleStatusChange = async (id: string, newStatus: string) => {
+    // Optimistic Update
+    const previousFarmers = [...farmers];
+    setFarmers(f => f.map(x => x._id === id ? { ...x, status: newStatus } : x));
+    toast.success(`Farmer marked as ${newStatus}`);
+
     try {
       await api.updateFarmerStatus(id, newStatus);
-      toast.success(`Farmer marked as ${newStatus}`);
-      setFarmers(f => f.map(x => x._id === id ? { ...x, status: newStatus } : x));
-    } catch { toast.error('Status update failed'); }
+    } catch {
+      toast.error('Status update failed');
+      setFarmers(previousFarmers); // Revert on failure
+    }
   };
 
   const handleDelete = async (id: string) => {

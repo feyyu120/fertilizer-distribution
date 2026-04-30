@@ -39,11 +39,17 @@ const OverviewTab = () => {
   }, []);
 
   const handleFarmerAction = async (id: string, status: string) => {
+    // Optimistic Update
+    const previousPending = [...pendingFarmers];
+    setPendingFarmers(f => f.filter(x => x._id !== id));
+    toast.success(`Farmer ${status}`);
+
     try {
       await api.approveFarmer(id, status);
-      toast.success(`Farmer ${status}`);
-      setPendingFarmers(f => f.filter(x => x._id !== id));
-    } catch { toast.error('Action failed'); }
+    } catch {
+      toast.error('Action failed');
+      setPendingFarmers(previousPending); // Revert
+    }
   };
 
   if (loading) return (
