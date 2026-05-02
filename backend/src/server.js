@@ -30,6 +30,8 @@ app.use('/api/fertilizers', require('./routes/fertilizerRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/news', require('./routes/newsRoutes'));
 app.use('/api/messages', require('./routes/messageRoutes'));
+app.use('/api/chat', require('./routes/ai'));
+app.use('/api/about', require('./routes/about'));
 
 const PORT = process.env.PORT || 5000;
 

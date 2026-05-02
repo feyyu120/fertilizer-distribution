@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   LayoutDashboard, Users, Package, ShoppingCart,
-  Newspaper, MessageSquare, Menu, X, LogOut, Leaf
+  Newspaper, MessageSquare, Menu, X, LogOut, Leaf, Info
 } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 import OverviewTab from '../components/admin/OverviewTab';
@@ -10,9 +10,10 @@ import FertilizersTab from '../components/admin/FertilizersTab';
 import OrdersTab from '../components/admin/OrdersTab';
 import NewsTab from '../components/admin/NewsTab';
 import MessagesTab from '../components/admin/MessagesTab';
+import AboutTab from '../components/admin/AboutTab';
 import ThemeToggle from '../components/ThemeToggle';
 
-type Tab = 'overview' | 'farmers' | 'fertilizers' | 'orders' | 'news' | 'messages';
+type Tab = 'overview' | 'farmers' | 'fertilizers' | 'orders' | 'news' | 'messages' | 'about';
 
 const navItems: { label: string; tab: Tab; icon: any; color: string }[] = [
   { label: 'Overview',    tab: 'overview',     icon: LayoutDashboard, color: 'text-green-600 dark:text-green-400' },
@@ -21,6 +22,7 @@ const navItems: { label: string; tab: Tab; icon: any; color: string }[] = [
   { label: 'Orders',      tab: 'orders',       icon: ShoppingCart,    color: 'text-indigo-600 dark:text-indigo-400' },
   { label: 'News & Posts',tab: 'news',         icon: Newspaper,       color: 'text-purple-600 dark:text-purple-400' },
   { label: 'Messages',    tab: 'messages',     icon: MessageSquare,   color: 'text-pink-600 dark:text-pink-400' },
+  { label: 'Site Info',   tab: 'about',        icon: Info,            color: 'text-cyan-600 dark:text-cyan-400' },
 ];
 
 const AdminDashboard = () => {
@@ -39,6 +41,7 @@ const AdminDashboard = () => {
     overview: 'Dashboard Overview', farmers: 'Farmer Verification',
     fertilizers: 'Fertilizer Inventory', orders: 'Order Management',
     news: 'News & Posts', messages: 'Support Messages',
+    about: 'Site Information (AI Context)',
   };
 
   return (
@@ -143,6 +146,7 @@ const AdminDashboard = () => {
           {activeTab === 'orders'      && <OrdersTab />}
           {activeTab === 'news'        && <NewsTab />}
           {activeTab === 'messages'    && <MessagesTab />}
+          {activeTab === 'about'       && <AboutTab />}
         </main>
       </div>
     </div>

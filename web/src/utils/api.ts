@@ -1,4 +1,6 @@
 const API = import.meta.env.VITE_API_URL || 'https://fertilizer-distribution.onrender.com/api';
+export const apiUrl = (path: string) => `${API}${path}`;
+
 
 export const api = {
   // ==================== AUTH ====================
@@ -177,6 +179,17 @@ export const api = {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })
+    }).then(r => r.json()),
+
+  // ==================== ABOUT ====================
+  getAbout: () =>
+    fetch(`${API}/about`).then(r => r.json()),
+
+  updateAbout: (data: { content: string }) =>
+    fetch(`${API}/about`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
     }).then(r => r.json()),
 };
 

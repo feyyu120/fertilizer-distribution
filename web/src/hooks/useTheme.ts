@@ -32,5 +32,5 @@ export const useTheme = () => {
     });
   };
 
-  return { isLightMode: !isDarkMode, toggleTheme };
+  return { isLightMode: !isDarkMode, isDarkMode, toggleTheme };
 };

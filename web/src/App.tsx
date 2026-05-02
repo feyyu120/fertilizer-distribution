@@ -12,6 +12,7 @@ import FAQ from './pages/FAQ';
 import Support from './pages/Support';
 import AdminDashboard from './pages/AdminDashboard';
 import OrderFertilizer from './pages/OrderFertilizer';
+import AiAssistant from './components/Ai';
 import React from 'react';
 
 // Custom route to redirect logged-in users away from auth pages
@@ -27,6 +28,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
+        <AiAssistant />
         <Routes>
           <Route path="/*" element={<UserLayout />} />
           <Route path="/admin/*" element={<AdminDashboard />} />
@@ -42,6 +44,7 @@ const UserLayout = () => (
     <Navbar />
     <main className="flex-1 flex flex-col relative">
       <Routes>
+
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
         <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />
