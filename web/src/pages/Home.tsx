@@ -44,6 +44,7 @@ const Home = () => {
                         transition={{ duration: 1.2 }}
                         className="absolute inset-0 bg-cover bg-center before:content-[''] before:absolute before:inset-"
                         style={{ backgroundImage: `url(${heroImages[currentImage]})` }}
+                        crossOrigin="anonymous"
                     />
                 </AnimatePresence>
 
@@ -184,6 +185,7 @@ const Home = () => {
                                         src={farmer.image}
                                         alt={farmer.name}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        crossOrigin="anonymous"
                                     />
                                     <div className="absolute top-4 right-4 bg-white/90 dark:bg-black/70 text-gray-900 dark:text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-md backdrop-blur-sm">
                                         {farmer.yield}

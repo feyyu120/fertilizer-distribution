@@ -50,6 +50,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { identifier, password } = req.body;
+        console.log(`🔑 Login attempt for: ${identifier}`);
 
         // Hardcoded admin check
         if (identifier === 'admin@fertilizerhub.et' && password === 'admin123') {
