@@ -36,6 +36,15 @@ The Fertilizer Distribution App helps improve transparency, efficiency, and fair
   * admin can delete news
 
 ---
+## Ai assistant features
+ * Ai assistant can answer user questions about fertilizers and registration
+ * Ai assistant can see the available fertilizers and their prices
+ * can answer questions about how to order
+ * can answer questions about how to register
+ * can answer questions about price
+ * can answer questions about location
+ * Doesn't answer or respond to questions that are not related to the app
+
 
 ## 🛠️ Tech Stack
 
