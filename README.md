@@ -3,7 +3,7 @@
 A modern full-stack web application designed to streamline and manage fertilizer distribution for farmers.
 
 🔗 **Live Demo:** https://fertilizer-distribution.vercel.app/
-📦 **GitHub Repo:** https://github.com/feyyu120/fertilizer-distribution.git
+
 
 ---
 
