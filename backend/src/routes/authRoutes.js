@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // Create new farmer (pending approval)
-        user = new Farmer({
+        user = new User({
             fullname,
             phone,
             email,
@@ -42,6 +42,7 @@ router.post('/register', async (req, res) => {
             }
         });
     } catch (error) {
+        console.error('❌ Registration Error:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
@@ -73,7 +74,7 @@ router.post('/login', async (req, res) => {
 
         const isEmail = identifier.includes('@');
         const query = isEmail ? { email: identifier } : { phone: identifier };
-        const user = await Farmer.findOne(query);
+        const user = await User.findOne(query);
 
         if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
@@ -107,6 +108,7 @@ router.post('/login', async (req, res) => {
             }
         });
     } catch (error) {
+        console.error('❌ Login Error:', error);
         res.status(500).json({ message: 'Server error' });
     }
 });
@@ -142,6 +144,7 @@ router.put('/profile', async (req, res) => {
 
         res.json(user);
     } catch (error) {
+        console.error('❌ Profile Update Error:', error);
         res.status(500).json({ message: 'Server error' });
     }
 });
@@ -166,6 +169,7 @@ router.put('/read-fertilizers', async (req, res) => {
 
         res.json(user);
     } catch (error) {
+        console.error('❌ Read Fertilizers Error:', error);
         res.status(500).json({ message: 'Server error' });
     }
 });
@@ -179,6 +183,7 @@ router.delete('/profile', async (req, res) => {
         await User.findByIdAndDelete(id);
         res.json({ message: 'Account deleted successfully' });
     } catch (error) {
+        console.error('❌ Account Deletion Error:', error);
         res.status(500).json({ message: 'Server error' });
     }
 });
@@ -196,6 +201,7 @@ router.get('/my-orders', async (req, res) => {
         const orders = await Order.find({ farmer: id }).sort({ createdAt: -1 });
         res.json(orders);
     } catch (error) {
+        console.error('❌ Get Orders Error:', error);
         res.status(500).json({ message: 'Server error' });
     }
 });
@@ -209,6 +215,7 @@ router.get('/my-messages', async (req, res) => {
         const messages = await Message.find({ phone }).sort({ createdAt: -1 });
         res.json(messages);
     } catch (error) {
+        console.error('❌ Get Messages Error:', error);
         res.status(500).json({ message: 'Server error' });
     }
 });
