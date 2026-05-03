@@ -1,4 +1,4 @@
-import { MessageCircle, Send, Phone } from 'lucide-react';
+import { MessageCircle, Send, Phone, Mail } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
@@ -76,8 +76,8 @@ const Support = () => {
                             </a>
 
                             <a href="mailto:feyselfeyyu@gmail.com" className="flex items-center gap-4 group p-3 -m-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 text-2xl transition-colors">
-                                    📧
+                                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center transition-colors">
+                                    <Mail className="text-blue-600 dark:text-blue-400" size={28} />
                                 </div>
                                 <div>
                                     <p className="font-medium text-gray-900 dark:text-gray-200 transition-colors">Email</p>
@@ -86,8 +86,8 @@ const Support = () => {
                             </a>
 
                             <a href="https://t.me/feyyu1" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group p-3 -m-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                                <div className="w-12 h-12 bg-blue-50 dark:bg-blue-600/30 rounded-2xl flex items-center justify-center text-blue-500 dark:text-blue-400 text-2xl transition-colors">
-                                    ✈️
+                                <div className="w-12 h-12 bg-blue-50 dark:bg-blue-600/30 rounded-2xl flex items-center justify-center transition-colors">
+                                    <Send className="text-blue-500 dark:text-blue-400" size={28} />
                                 </div>
                                 <div>
                                     <p className="font-medium text-gray-900 dark:text-gray-200 transition-colors">Telegram</p>
