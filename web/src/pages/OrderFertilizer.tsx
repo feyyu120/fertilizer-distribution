@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
-import { Package, Truck, CreditCard, ChevronLeft, CheckCircle2 } from 'lucide-react';
+import { Package, Truck, CreditCard, ChevronLeft, CheckCircle2, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { api } from '../utils/api';
 import { useAuth } from '../context/AuthContext';

@@ -1,4 +1,4 @@
-import { Heart, MessageCircle, Share2, User, Send, X, Search, Icon, UserCog } from 'lucide-react';
+import { Heart, MessageCircle, Share2, User, Send, X, Search, UserCog } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
