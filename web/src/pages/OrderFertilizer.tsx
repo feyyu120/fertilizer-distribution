@@ -12,8 +12,9 @@ const OrderFertilizer = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
     
-    // Attempt to get fertilizer from navigation state, otherwise we would fetch it
     const [fertilizer, setFertilizer] = useState<any>(location.state?.fertilizer || null);
+    const [activeSeason, setActiveSeason] = useState<any>(null);
+    const [loadingSeason, setLoadingSeason] = useState(true);
     
     const [quantity, setQuantity] = useState<number>(1);
     const [address, setAddress] = useState(user?.address || '');
@@ -22,15 +23,27 @@ const OrderFertilizer = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
+        const fetchSeason = async () => {
+            try {
+                const season = await api.getActiveSeason();
+                if (season && !season.message) {
+                    setActiveSeason(season);
+                }
+            } catch (err) {
+                console.error("Error fetching active season:", err);
+            } finally {
+                setLoadingSeason(false);
+            }
+        };
+
         if (!user) {
             toast.error("Please log in to place an order");
             navigate('/login');
         }
         if (!fertilizer && id) {
-            // If page refreshed, fetch fertilizer details (simplified here, assuming list is available)
-            // For now, if no fertilizer in state, redirect to home
             navigate('/');
         }
+        fetchSeason();
     }, [user, fertilizer, id, navigate]);
 
     if (!fertilizer || !user) return null;
@@ -69,10 +82,23 @@ const OrderFertilizer = () => {
                 notes: notes
             };
 
-            await api.createOrder(orderData);
+            const response = await api.createOrder(orderData);
+            
+            if (response.message && response.message.includes('already')) {
+                toast.error(response.message);
+                setIsSubmitting(false);
+                return;
+            }
+            
+            if (response.message && (response.status === 400 || response.status === 500)) {
+                toast.error(response.message);
+                setIsSubmitting(false);
+                return;
+            }
+
             toast.success("Order placed successfully!");
             setTimeout(() => {
-                navigate('/'); // Or redirect to profile -> orders
+                navigate('/');
             }, 1500);
         } catch (error) {
             console.error("Order error:", error);
@@ -109,9 +135,20 @@ const OrderFertilizer = () => {
                     <form onSubmit={handleSubmit} className="space-y-8">
                         {/* Order Summary Section */}
                         <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 transition-colors">
-                            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                                <Package size={20} className="text-green-500" /> Order Summary
-                            </h3>
+                            <div className="flex justify-between items-start mb-4">
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                    <Package size={20} className="text-green-500" /> Order Summary
+                                </h3>
+                                {activeSeason ? (
+                                    <div className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-3 py-1 rounded-full text-xs font-bold border border-green-200 dark:border-green-800 animate-pulse">
+                                        Active Season: {activeSeason.seasonName} {activeSeason.year}
+                                    </div>
+                                ) : !loadingSeason && (
+                                    <div className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 px-3 py-1 rounded-full text-xs font-bold border border-red-200 dark:border-red-800">
+                                        No Active Season
+                                    </div>
+                                )}
+                            </div>
                             
                             <div className="flex justify-between items-center mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                                 <div>
@@ -209,7 +246,7 @@ const OrderFertilizer = () => {
                         <div className="pt-6 border-t border-gray-200 dark:border-gray-800">
                             <button
                                 type="submit"
-                                disabled={isSubmitting}
+                                disabled={isSubmitting || !activeSeason}
                                 className="w-full py-4 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white rounded-2xl font-bold text-lg shadow-lg shadow-green-900/20 active:scale-[0.98] transition-all flex justify-center items-center gap-2"
                             >
                                 {isSubmitting ? (

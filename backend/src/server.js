@@ -28,6 +28,8 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/admin', require('./routes/adminRoute'));
 app.use('/api/fertilizers', require('./routes/fertilizerRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
+app.use('/api/seasons', require('./routes/seasonRoutes'));
+app.use('/api/suppliers', require('./routes/supplierRoutes'));
 app.use('/api/news', require('./routes/newsRoutes'));
 app.use('/api/messages', require('./routes/messageRoutes'));
 app.use('/api/chat', require('./routes/ai'));

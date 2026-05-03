@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   LayoutDashboard, Users, Package, ShoppingCart,
-  Newspaper, MessageSquare, Menu, X, LogOut, Leaf, Info
+  Newspaper, MessageSquare, Menu, X, LogOut, Leaf, Info, Calendar, Truck
 } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 import OverviewTab from '../components/admin/OverviewTab';
@@ -11,15 +11,19 @@ import OrdersTab from '../components/admin/OrdersTab';
 import NewsTab from '../components/admin/NewsTab';
 import MessagesTab from '../components/admin/MessagesTab';
 import AboutTab from '../components/admin/AboutTab';
+import SeasonsTab from '../components/admin/SeasonsTab';
+import SuppliersTab from '../components/admin/SuppliersTab';
 import ThemeToggle from '../components/ThemeToggle';
 
-type Tab = 'overview' | 'farmers' | 'fertilizers' | 'orders' | 'news' | 'messages' | 'about';
+type Tab = 'overview' | 'farmers' | 'fertilizers' | 'orders' | 'seasons' | 'suppliers' | 'news' | 'messages' | 'about';
 
 const navItems: { label: string; tab: Tab; icon: any; color: string }[] = [
   { label: 'Overview',    tab: 'overview',     icon: LayoutDashboard, color: 'text-green-600 dark:text-green-400' },
   { label: 'Farmers',     tab: 'farmers',      icon: Users,           color: 'text-blue-600 dark:text-blue-400' },
   { label: 'Fertilizers', tab: 'fertilizers',  icon: Package,         color: 'text-amber-600 dark:text-amber-400' },
   { label: 'Orders',      tab: 'orders',       icon: ShoppingCart,    color: 'text-indigo-600 dark:text-indigo-400' },
+  { label: 'Seasons',     tab: 'seasons',      icon: Calendar,        color: 'text-blue-500 dark:text-blue-300' },
+  { label: 'Suppliers',   tab: 'suppliers',    icon: Truck,           color: 'text-purple-500 dark:text-purple-300' },
   { label: 'News & Posts',tab: 'news',         icon: Newspaper,       color: 'text-purple-600 dark:text-purple-400' },
   { label: 'Messages',    tab: 'messages',     icon: MessageSquare,   color: 'text-pink-600 dark:text-pink-400' },
   { label: 'Site Info',   tab: 'about',        icon: Info,            color: 'text-cyan-600 dark:text-cyan-400' },
@@ -38,8 +42,8 @@ const AdminDashboard = () => {
   const handleNav = (tab: Tab) => { setActiveTab(tab); setSidebarOpen(false); };
 
   const tabTitles: Record<Tab, string> = {
-    overview: 'Dashboard Overview', farmers: 'Farmer Verification',
     fertilizers: 'Fertilizer Inventory', orders: 'Order Management',
+    seasons: 'Agricultural Seasons', suppliers: 'Supplier Management',
     news: 'News & Posts', messages: 'Support Messages',
     about: 'Site Information (AI Context)',
   };
@@ -144,6 +148,8 @@ const AdminDashboard = () => {
           {activeTab === 'farmers'     && <FarmersTab />}
           {activeTab === 'fertilizers' && <FertilizersTab />}
           {activeTab === 'orders'      && <OrdersTab />}
+          {activeTab === 'seasons'     && <SeasonsTab />}
+          {activeTab === 'suppliers'   && <SuppliersTab />}
           {activeTab === 'news'        && <NewsTab />}
           {activeTab === 'messages'    && <MessagesTab />}
           {activeTab === 'about'       && <AboutTab />}

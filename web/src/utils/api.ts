@@ -191,6 +191,49 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     }).then(r => r.json()),
+
+  // ==================== SEASONS ====================
+  getSeasons: () =>
+    fetch(`${API}/seasons`).then(r => r.json()),
+
+  getActiveSeason: () =>
+    fetch(`${API}/seasons/active`).then(r => r.json()),
+
+  addSeason: (data: any) =>
+    fetch(`${API}/seasons`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
+
+  updateSeason: (id: string, data: any) =>
+    fetch(`${API}/seasons/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
+
+  activateSeason: (id: string) =>
+    fetch(`${API}/seasons/${id}/activate`, {
+      method: 'PATCH',
+    }).then(r => r.json()),
+
+  deleteSeason: (id: string) =>
+    fetch(`${API}/seasons/${id}`, { method: 'DELETE' }).then(r => r.json()),
+
+  // ==================== SUPPLIERS ====================
+  getSuppliers: () =>
+    fetch(`${API}/suppliers`).then(r => r.json()),
+
+  addSupplier: (data: any) =>
+    fetch(`${API}/suppliers`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
+
+  deleteSupplier: (id: string) =>
+    fetch(`${API}/suppliers/${id}`, { method: 'DELETE' }).then(r => r.json()),
 };
 
 export default api;
