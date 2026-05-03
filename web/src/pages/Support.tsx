@@ -65,23 +65,23 @@ const Support = () => {
                         </h3>
 
                         <div className="space-y-6">
-                            <a href="https://wa.me/251950471868" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group p-3 -m-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                            <a href="https://wa.me/2519504718" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group p-3 -m-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                                 <div className="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-2xl flex items-center justify-center transition-colors">
                                     <Phone className="text-green-600 dark:text-green-500" size={28} />
                                 </div>
                                 <div>
                                     <p className="font-medium text-gray-900 dark:text-gray-200 transition-colors">Call or WhatsApp</p>
-                                    <p className="text-green-600 dark:text-green-400 group-hover:underline transition-colors">+251 911 234 567</p>
+                                    <p className="text-green-600 dark:text-green-400 group-hover:underline transition-colors">+251 950 471 8</p>
                                 </div>
                             </a>
 
-                            <a href="mailto:feyselfeyyu@gmail.come" className="flex items-center gap-4 group p-3 -m-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                            <a href="mailto:feyselfeyyu@gmail.com" className="flex items-center gap-4 group p-3 -m-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                                 <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 text-2xl transition-colors">
                                     📧
                                 </div>
                                 <div>
                                     <p className="font-medium text-gray-900 dark:text-gray-200 transition-colors">Email</p>
-                                    <p className="text-blue-600 dark:text-blue-400 group-hover:underline transition-colors">support@fertilizerhub.et</p>
+                                    <p className="text-blue-600 dark:text-blue-400 group-hover:underline transition-colors">feyselfeyyu@gmail.com</p>
                                 </div>
                             </a>
 
@@ -91,7 +91,7 @@ const Support = () => {
                                 </div>
                                 <div>
                                     <p className="font-medium text-gray-900 dark:text-gray-200 transition-colors">Telegram</p>
-                                    <p className="text-blue-500 dark:text-blue-400 group-hover:underline transition-colors">@FertilizerHubSupport</p>
+                                    <p className="text-blue-500 dark:text-blue-400 group-hover:underline transition-colors">@feyyu1</p>
                                 </div>
                             </a>
                         </div>
