@@ -28,7 +28,7 @@ const Support = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (!user) {
             toast.error("You must be logged in to send a message.");
             setTimeout(() => navigate('/login'), 1500);
@@ -65,7 +65,7 @@ const Support = () => {
                         </h3>
 
                         <div className="space-y-6">
-                            <a href="https://wa.me/251911234567" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group p-3 -m-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                            <a href="https://wa.me/251950471868" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group p-3 -m-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                                 <div className="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-2xl flex items-center justify-center transition-colors">
                                     <Phone className="text-green-600 dark:text-green-500" size={28} />
                                 </div>
@@ -75,7 +75,7 @@ const Support = () => {
                                 </div>
                             </a>
 
-                            <a href="mailto:support@fertilizerhub.et" className="flex items-center gap-4 group p-3 -m-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                            <a href="mailto:feyselfeyyu@gmail.come" className="flex items-center gap-4 group p-3 -m-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                                 <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 text-2xl transition-colors">
                                     📧
                                 </div>
@@ -85,7 +85,7 @@ const Support = () => {
                                 </div>
                             </a>
 
-                            <a href="https://t.me/FertilizerHubSupport" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group p-3 -m-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                            <a href="https://t.me/feyyu1" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group p-3 -m-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                                 <div className="w-12 h-12 bg-blue-50 dark:bg-blue-600/30 rounded-2xl flex items-center justify-center text-blue-500 dark:text-blue-400 text-2xl transition-colors">
                                     ✈️
                                 </div>

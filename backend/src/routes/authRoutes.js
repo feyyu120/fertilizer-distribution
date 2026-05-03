@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // Create new farmer (pending approval)
-        user = new User({
+        user = new Farmer({
             fullname,
             phone,
             email,
@@ -73,7 +73,7 @@ router.post('/login', async (req, res) => {
 
         const isEmail = identifier.includes('@');
         const query = isEmail ? { email: identifier } : { phone: identifier };
-        const user = await User.findOne(query);
+        const user = await Farmer.findOne(query);
 
         if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
