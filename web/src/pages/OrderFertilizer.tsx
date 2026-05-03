@@ -84,14 +84,9 @@ const OrderFertilizer = () => {
 
             const response = await api.createOrder(orderData);
             
-            if (response.message && response.message.includes('already')) {
-                toast.error(response.message);
-                setIsSubmitting(false);
-                return;
-            }
-            
-            if (response.message && (response.status === 400 || response.status === 500)) {
-                toast.error(response.message);
+            // Check if response is an error (has message but no _id)
+            if (response.message && !response._id) {
+                toast.error(response.message, { duration: 4000 });
                 setIsSubmitting(false);
                 return;
             }
@@ -128,27 +123,49 @@ const OrderFertilizer = () => {
                             Complete Your Order
                         </h1>
                         <p className="text-gray-500 dark:text-gray-400 mt-2">
-                            Review details and select your payment method
+                            Review details and confirm your fertilizer request
                         </p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-8">
-                        {/* Order Summary Section */}
-                        <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 transition-colors">
-                            <div className="flex justify-between items-start mb-4">
-                                <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                                    <Package size={20} className="text-green-500" /> Order Summary
+                        {/* Farmer & Season Info Section */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="bg-blue-50/50 dark:bg-blue-900/10 rounded-2xl p-6 border border-blue-100 dark:border-blue-900/20">
+                                <h3 className="text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                                    <User size={16} /> Farmer Details
+                                </h3>
+                                <div className="space-y-2">
+                                    <p className="text-gray-900 dark:text-white font-semibold">{user.fullname}</p>
+                                    <p className="text-gray-500 dark:text-gray-400 text-sm">{user.phone}</p>
+                                    <p className="text-gray-500 dark:text-gray-400 text-xs">ID: {user._id || user.id}</p>
+                                </div>
+                            </div>
+
+                            <div className="bg-amber-50/50 dark:bg-amber-900/10 rounded-2xl p-6 border border-amber-100 dark:border-amber-900/20">
+                                <h3 className="text-sm font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                                    <Package size={16} /> Season Information
                                 </h3>
                                 {activeSeason ? (
-                                    <div className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-3 py-1 rounded-full text-xs font-bold border border-green-200 dark:border-green-800 animate-pulse">
-                                        Active Season: {activeSeason.seasonName} {activeSeason.year}
+                                    <div className="space-y-2">
+                                        <p className="text-gray-900 dark:text-white font-semibold">{activeSeason.seasonName} Season</p>
+                                        <p className="text-gray-500 dark:text-gray-400 text-sm">Year: {activeSeason.year}</p>
+                                        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold border border-green-200 dark:border-green-800">
+                                            ACTIVE
+                                        </div>
                                     </div>
-                                ) : !loadingSeason && (
-                                    <div className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 px-3 py-1 rounded-full text-xs font-bold border border-red-200 dark:border-red-800">
-                                        No Active Season
+                                ) : (
+                                    <div className="text-red-500 dark:text-red-400 text-sm font-medium">
+                                        No active season found. Ordering is disabled.
                                     </div>
                                 )}
                             </div>
+                        </div>
+
+                        {/* Order Summary Section */}
+                        <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 transition-colors">
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                                <Package size={20} className="text-green-500" /> Fertilizer Summary
+                            </h3>
                             
                             <div className="flex justify-between items-center mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                                 <div>

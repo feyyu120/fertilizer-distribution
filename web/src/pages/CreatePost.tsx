@@ -15,10 +15,10 @@ const CreatePost = () => {
     const [image, setImage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // If user is not logged in, redirect them
-    if (!user) {
-        toast.error("Please log in to create a post");
-        navigate('/login');
+    // If user is not logged in or not an admin, redirect them
+    if (!user || user.role !== 'admin') {
+        toast.error("Only administrators can create posts");
+        navigate('/news');
         return null;
     }
 

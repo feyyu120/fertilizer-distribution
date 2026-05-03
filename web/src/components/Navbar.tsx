@@ -101,9 +101,8 @@ const Navbar = () => {
     ];
 
     if (user) {
-        navLinks.splice(2, 0, { path: '/create-post', label: 'Create post' });
-        // Add Dashboard link for admins
         if (user.role === 'admin') {
+            navLinks.splice(2, 0, { path: '/create-post', label: 'Create post' });
             navLinks.push({ path: '/admin', label: 'Dashboard' });
         }
     }
