@@ -42,9 +42,14 @@ const AdminDashboard = () => {
   const handleNav = (tab: Tab) => { setActiveTab(tab); setSidebarOpen(false); };
 
   const tabTitles: Record<Tab, string> = {
-    fertilizers: 'Fertilizer Inventory', orders: 'Order Management',
-    seasons: 'Agricultural Seasons', suppliers: 'Supplier Management',
-    news: 'News & Posts', messages: 'Support Messages',
+    overview: 'Administrative Overview',
+    farmers: 'Farmer Directory',
+    fertilizers: 'Fertilizer Inventory',
+    orders: 'Order Management',
+    seasons: 'Agricultural Seasons',
+    suppliers: 'Supplier Management',
+    news: 'News & Posts',
+    messages: 'Support Messages',
     about: 'Site Information (AI Context)',
   };
 

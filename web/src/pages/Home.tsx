@@ -44,7 +44,6 @@ const Home = () => {
                         transition={{ duration: 1.2 }}
                         className="absolute inset-0 bg-cover bg-center before:content-[''] before:absolute before:inset-"
                         style={{ backgroundImage: `url(${heroImages[currentImage]})` }}
-                        crossOrigin="anonymous"
                     />
                 </AnimatePresence>
 
